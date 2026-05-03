@@ -1,0 +1,84 @@
+/* 图片样式 */
+.md-content img {
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    margin: 1.2em auto;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.2s ease;
+}
+
+.md-content img:hover {
+    transform: scale(1.02);
+}
+
+/* 内容区域 */
+.md-content {
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* 标题样式 */
+.md-content h1 {
+    font-size: 2em;
+    font-weight: 700;
+    margin-top: 1.5em;
+    padding-bottom: 0.3em;
+    border-bottom: 2px solid var(--md-primary-fg-color);
+}
+
+.md-content h2 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 1.5em;
+    padding-left: 0.5em;
+    border-left: 4px solid var(--md-accent-fg-color);
+}
+
+.md-content h3 {
+    font-size: 1.25em;
+    font-weight: 600;
+    margin-top: 1.2em;
+}
+
+/* 列表样式 */
+.md-content ul, .md-content ol {
+    padding-left: 1.5em;
+}
+
+.md-content li {
+    margin-bottom: 0.4em;
+}
+
+/* 强调文字 */
+.md-content strong {
+    color: var(--md-primary-fg-color);
+}
+
+/* 引用块 */
+.md-content blockquote {
+    border-left: 4px solid var(--md-accent-fg-color);
+    padding: 0.5em 1em;
+    margin: 1em 0;
+    background: var(--md-code-bg-color);
+    border-radius: 0 8px 8px 0;
+}
+
+/* 代码块 */
+.md-content code {
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+}
+
+/* 导航侧边栏 */
+.md-nav__item {
+    margin-bottom: 2px;
+}
+
+/* 首页标题 */
+.md-content h1:first-of-type {
+    text-align: center;
+    border-bottom: none;
+    margin-top: 0.5em;
+}

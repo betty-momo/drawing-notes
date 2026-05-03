@@ -1,8 +1,13 @@
 site_name: 绘画笔记
+site_description: 个人学习绘画之路
 use_directory_urls: false
+
 theme:
   name: material
   language: zh
+  font:
+    text: Noto Sans SC
+    code: Fira Code
   palette:
     - scheme: default
       primary: indigo
@@ -19,10 +24,15 @@ theme:
   features:
     - navigation.sections
     - navigation.expand
+    - navigation.top
     - search.highlight
     - search.suggest
+    - content.code.copy
   icon:
     repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/extra.css
 
 nav:
   - 首页: index.md
@@ -53,3 +63,5 @@ nav:
 markdown_extensions:
   - toc:
       permalink: true
+  - attr_list
+  - md_in_html
