@@ -1,5 +1,6 @@
 site_name: 绘画笔记
 site_description: 个人学习绘画之路
+site_url: https://betty-momo.github.io/drawing-notes/
 use_directory_urls: false
 
 theme:
@@ -25,9 +26,15 @@ theme:
     - navigation.sections
     - navigation.expand
     - navigation.top
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.instant
+    - navigation.instant.progress
     - search.highlight
     - search.suggest
+    - search.share
     - content.code.copy
+    - content.tooltips
   icon:
     repo: fontawesome/brands/github
 
@@ -65,3 +72,9 @@ markdown_extensions:
       permalink: true
   - attr_list
   - md_in_html
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.mark
+  - pymdownx.keys
