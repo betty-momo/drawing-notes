@@ -1,0 +1,54 @@
+site_name: 绘画笔记
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: 切换到暗色模式
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: 切换到亮色模式
+  features:
+    - navigation.sections
+    - navigation.expand
+    - search.highlight
+    - search.suggest
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - 首页: index.md
+  - 起草:
+    - 人体: 起草/人体.md
+    - 场景: 起草/场景.md
+  - 人体知识: 人体知识.md
+  - 场景知识: 场景知识.md
+  - 上色流程:
+    - 勾线: 上色流程/勾线.md
+    - 固有色: 上色流程/固有色.md
+    - 色彩知识: 上色流程/色彩知识.md
+    - 二分: 上色流程/二分.md
+    - 三分: 上色流程/三分.md
+    - 闭塞: 上色流程/闭塞.md
+    - 灰面: 上色流程/灰面.md
+    - 高光: 上色流程/高光.md
+    - 反光: 上色流程/反光.md
+    - 塑造: 上色流程/塑造.md
+    - 光源衰减: 上色流程/光源衰减.md
+  - 专题:
+    - 眼睛上色: 专题/眼睛上色.md
+    - 头发塑造: 专题/头发塑造.md
+    - 皮肤塑造: 专题/皮肤塑造.md
+    - 衣褶: 专题/衣褶.md
+    - 泳装衣褶: 专题/泳装衣褶.md
+
+markdown_extensions:
+  - toc:
+      permalink: true
