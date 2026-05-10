@@ -156,19 +156,19 @@
 <div class="section-title">基础知识</div>
 
 <div class="hero-cards">
-    <a class="hero-card" href="人体知识.md">
+    <a class="hero-card" href="人体知识.html">
         <span class="card-icon">人</span>
         <div class="card-title">人体知识</div>
         <div class="card-desc">五官比例 · 头肩颈 · 腰腹 · 腿部 · 手臂</div>
         <span class="card-link">查看详情 →</span>
     </a>
-    <a class="hero-card" href="场景知识.md">
+    <a class="hero-card" href="场景知识.html">
         <span class="card-icon">场</span>
         <div class="card-title">场景知识</div>
         <div class="card-desc">一点透视 · 两点透视 · 三点透视 · 结构概括</div>
         <span class="card-link">查看详情 →</span>
     </a>
-    <a class="hero-card" href="色彩知识.md">
+    <a class="hero-card" href="色彩知识.html">
         <span class="card-icon">色</span>
         <div class="card-title">色彩知识</div>
         <div class="card-desc">正片叠底 · 滤色 · 叠加 · 图层混合</div>
@@ -179,25 +179,25 @@
 <div class="section-title">绘画流程</div>
 
 <div class="hero-cards">
-    <a class="hero-card" href="流程/起草.md">
+    <a class="hero-card" href="流程/起草.html">
         <span class="card-icon">起</span>
         <div class="card-title">起草</div>
         <div class="card-desc">人体动态 · 体块概括 · 透视线</div>
         <span class="card-link">开始学习 →</span>
     </a>
-    <a class="hero-card" href="流程/勾线.md">
+    <a class="hero-card" href="流程/勾线.html">
         <span class="card-icon">线</span>
         <div class="card-title">勾线</div>
         <div class="card-desc">粗细变化 · 闭塞 · 断线 · 蒙版</div>
         <span class="card-link">查看流程 →</span>
     </a>
-    <a class="hero-card" href="流程/二分.md">
+    <a class="hero-card" href="流程/二分.html">
         <span class="card-icon">明</span>
         <div class="card-title">二分</div>
         <div class="card-desc">光源判断 · 阴影细化 · 叠加染色</div>
         <span class="card-link">查看流程 →</span>
     </a>
-    <a class="hero-card" href="流程/高光.md">
+    <a class="hero-card" href="流程/高光.html">
         <span class="card-icon">亮</span>
         <div class="card-title">高光与塑造</div>
         <div class="card-desc">高光 · 反光 · 塑造 · 光源衰减</div>
@@ -208,25 +208,25 @@
 <div class="section-title">专题深入</div>
 
 <div class="hero-cards">
-    <a class="hero-card" href="专题/眼睛上色.md">
+    <a class="hero-card" href="专题/眼睛上色.html">
         <span class="card-icon">眼</span>
         <div class="card-title">眼睛上色</div>
         <div class="card-desc">瞳孔 · 虹膜 · 高光 · 反光 · 睫毛</div>
         <span class="card-link">阅读 →</span>
     </a>
-    <a class="hero-card" href="专题/头发塑造.md">
+    <a class="hero-card" href="专题/头发塑造.html">
         <span class="card-icon">发</span>
         <div class="card-title">头发塑造</div>
         <div class="card-desc">二分细化 · 灰面 · 高光 · 反光 · 线稿染色</div>
         <span class="card-link">阅读 →</span>
     </a>
-    <a class="hero-card" href="专题/皮肤塑造.md">
+    <a class="hero-card" href="专题/皮肤塑造.html">
         <span class="card-icon">肤</span>
         <div class="card-title">皮肤塑造</div>
         <div class="card-desc">腮红 · 阴影 · 暗面 · 高光 · 面部细节</div>
         <span class="card-link">阅读 →</span>
     </a>
-    <a class="hero-card" href="专题/衣褶.md">
+    <a class="hero-card" href="专题/衣褶.html">
         <span class="card-icon">褶</span>
         <div class="card-title">衣褶刻画</div>
         <div class="card-desc">取舍思路 · 阴影刻画 · 简化完成</div>
