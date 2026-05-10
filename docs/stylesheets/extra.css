@@ -1,5 +1,5 @@
 /* ========================================
-   绘画笔记 - 完整视觉方案
+   绘画笔记 - 完整视觉方案 v3
    ======================================== */
 
 /* --- 自定义配色 --- */
@@ -28,7 +28,7 @@
 .md-content__inner {
     max-width: 920px;
     margin: 0 auto;
-    padding: 1.5em 2.2em;
+    padding: 1.5em 2.2em 3em;
 }
 
 /* --- 标题 --- */
@@ -55,24 +55,13 @@
     background-clip: text;
 }
 
-/* 首页副标题 */
-.md-typeset > h1 + blockquote {
-    text-align: center;
-    border-left: none;
-    background: none;
-    padding: 0;
-    margin-bottom: 1.8em;
-    font-size: 1.05em;
-    color: color-mix(in srgb, var(--md-default-fg-color) 55%, transparent);
-}
-
 .md-content h2 {
     font-size: 1.55em;
     font-weight: 600;
     margin-top: 2em;
     padding: 0.35em 0 0.35em 0.65em;
     border-left: 4px solid var(--md-accent-fg-color);
-    background: linear-gradient(90deg, color-mix(in srgb, var(--md-accent-fg-color) 6%, transparent), transparent);
+    background: linear-gradient(90deg, rgba(167,139,250,0.06), transparent);
     border-radius: 0 8px 8px 0;
 }
 
@@ -100,7 +89,11 @@
     font-size: 1.08em;
     font-weight: 600;
     margin-top: 1.2em;
-    color: color-mix(in srgb, var(--md-default-fg-color) 80%, transparent);
+    color: rgba(0,0,0,0.7);
+}
+
+[data-md-color-scheme="slate"] .md-content h4 {
+    color: rgba(255,255,255,0.7);
 }
 
 /* --- 段落 --- */
@@ -128,7 +121,7 @@
     border-left: 4px solid var(--md-accent-fg-color);
     padding: 0.8em 1.2em;
     margin: 1.2em 0;
-    background: color-mix(in srgb, var(--md-accent-fg-color) 5%, transparent);
+    background: rgba(167,139,250,0.04);
     border-radius: 0 8px 8px 0;
 }
 
@@ -139,7 +132,7 @@
 /* --- 图片 --- */
 .md-content img {
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.06);
     margin: 1.5em auto;
     display: block;
     max-width: 100%;
@@ -149,7 +142,12 @@
 
 .md-content img:hover {
     transform: scale(1.02);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* 覆盖自定义 class 图片的默认 margin */
+.md-content .scene-img {
+    margin: 1em auto;
 }
 
 /* --- 代码 --- */
@@ -171,11 +169,11 @@
     margin: 1.2em 0;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
 .md-content table thead {
-    background: linear-gradient(135deg, var(--md-primary-fg-color), color-mix(in srgb, var(--md-primary-fg-color) 85%, var(--md-accent-fg-color)));
+    background: linear-gradient(135deg, var(--md-primary-fg-color), rgba(99,102,241,0.85));
     color: #fff;
 }
 
@@ -189,16 +187,16 @@
 
 .md-content table td {
     padding: 0.65em 1.1em;
-    border-bottom: 1px solid color-mix(in srgb, var(--md-default-fg-color) 8%, transparent);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
     font-size: 0.92em;
 }
 
 .md-content table tbody tr:nth-child(even) {
-    background: color-mix(in srgb, var(--md-default-fg-color) 3%, transparent);
+    background: rgba(0,0,0,0.02);
 }
 
 .md-content table tbody tr:hover {
-    background: color-mix(in srgb, var(--md-accent-fg-color) 8%, transparent);
+    background: rgba(167,139,250,0.06);
     transition: background 0.15s ease;
 }
 
@@ -206,89 +204,227 @@
 .md-content hr {
     border: none;
     height: 1px;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--md-primary-fg-color) 25%, transparent), transparent);
+    background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent);
     margin: 2.5em 0;
 }
 
 /* ========================================
-   首页卡片网格
+   首页专用样式
    ======================================== */
-.md-typeset .grid.cards > ul {
+.section-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 2em 0 0.8em;
+    padding: 0.3em 0 0.3em 0.65em;
+    border-left: 4px solid #a78bfa;
+    background: linear-gradient(90deg, rgba(167,139,250,0.06), transparent);
+    border-radius: 0 8px 8px 0;
+}
+
+.hero-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1em;
-    padding: 0;
-    list-style: none;
+    margin: 1em 0 1.5em;
 }
 
-.md-typeset .grid.cards > ul > li {
-    border: 1px solid color-mix(in srgb, var(--md-default-fg-color) 12%, transparent);
-    border-radius: 12px;
-    padding: 1.2em 1.4em;
-    margin: 0;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    background: color-mix(in srgb, var(--md-default-bg-color) 60%, transparent);
+.hero-card {
+    border: 1px solid rgba(99,102,241,0.1);
+    border-radius: 14px;
+    padding: 1.4em 1.2em 1.1em;
+    transition: all 0.25s ease;
     position: relative;
     overflow: hidden;
+    background: linear-gradient(135deg, rgba(99,102,241,0.02), rgba(167,139,250,0.02));
+    text-decoration: none !important;
+    display: block;
+    color: inherit;
 }
 
-.md-typeset .grid.cards > ul > li::before {
+.hero-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(99,102,241,0.12);
+    border-color: rgba(167,139,250,0.3);
+    text-decoration: none !important;
+    color: inherit;
+}
+
+.hero-card::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+    background: linear-gradient(90deg, #6366f1, #a78bfa);
     opacity: 0;
     transition: opacity 0.25s ease;
 }
 
-.md-typeset .grid.cards > ul > li:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    border-color: color-mix(in srgb, var(--md-accent-fg-color) 30%, transparent);
-}
+.hero-card:hover::before { opacity: 1; }
 
-.md-typeset .grid.cards > ul > li:hover::before {
-    opacity: 1;
-}
-
-/* 卡片图标 */
-.md-typeset .grid.cards .twemoji {
-    font-size: 2em;
-    display: block;
-    margin-bottom: 0.3em;
-}
-
-/* 卡片内文字 */
-.md-typeset .grid.cards > ul > li > :nth-child(2) {
-    font-weight: 700;
+.hero-card .card-icon {
     font-size: 1.1em;
-    margin-bottom: 0.2em;
+    margin-bottom: 0.5em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #6366f1, #a78bfa);
+    color: #fff;
+    font-weight: 800;
 }
 
-.md-typeset .grid.cards > ul > li > p:nth-child(2) {
-    color: color-mix(in srgb, var(--md-default-fg-color) 50%, transparent);
-    font-size: 0.88em;
-    line-height: 1.6;
-    margin-bottom: 0.6em;
+.hero-card .card-title {
+    font-size: 1.1em;
+    font-weight: 700;
+    margin-bottom: 0.25em;
+    color: var(--md-primary-fg-color);
 }
 
-/* 卡片链接 */
-.md-typeset .grid.cards a {
-    font-size: 0.88em;
+.hero-card .card-desc {
+    font-size: 0.85em;
+    color: rgba(0,0,0,0.45);
+    line-height: 1.5;
+    margin-bottom: 0.5em;
+}
+
+.hero-card .card-link {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: var(--md-accent-fg-color);
+}
+
+[data-md-color-scheme="slate"] .hero-card {
+    border-color: rgba(129,140,248,0.12);
+    background: linear-gradient(135deg, rgba(129,140,248,0.04), rgba(196,181,253,0.02));
+}
+
+[data-md-color-scheme="slate"] .hero-card:hover {
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    border-color: rgba(196,181,253,0.25);
+}
+
+[data-md-color-scheme="slate"] .hero-card .card-desc {
+    color: rgba(255,255,255,0.4);
+}
+
+/* 课程标签 */
+.course-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45em;
+    margin: 0.8em 0;
+}
+
+.course-tag {
+    display: inline-block;
+    padding: 0.3em 0.85em;
+    border-radius: 20px;
+    font-size: 0.87em;
     font-weight: 500;
+    background: rgba(99,102,241,0.06);
+    color: var(--md-primary-fg-color);
+    border: 1px solid rgba(99,102,241,0.1);
+    transition: all 0.15s ease;
 }
 
-/* --- Admonition 美化 --- */
-.md-typeset .admonition {
+.course-tag:hover {
+    background: rgba(99,102,241,0.12);
+    border-color: rgba(99,102,241,0.2);
+}
+
+/* 提示框 */
+.tip-box {
+    border-radius: 12px;
+    padding: 1.1em 1.3em;
+    margin: 0.8em 0;
+    display: flex;
+    gap: 0.8em;
+    align-items: flex-start;
+}
+
+.tip-box .tip-icon {
+    font-size: 1.4em;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.tip-box.tip {
+    background: linear-gradient(135deg, rgba(52,211,153,0.06), rgba(52,211,153,0.02));
+    border: 1px solid rgba(52,211,153,0.15);
+}
+
+.tip-box.info {
+    background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(99,102,241,0.02));
+    border: 1px solid rgba(99,102,241,0.12);
+}
+
+/* ========================================
+   场景知识页面
+   ======================================== */
+.perspective-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1em;
+    margin: 1em 0;
+}
+
+.perspective-card {
+    border: 1px solid rgba(99,102,241,0.1);
+    border-radius: 12px;
+    padding: 1.2em;
+    background: rgba(99,102,241,0.02);
+    transition: box-shadow 0.2s ease;
+}
+
+.perspective-card:hover {
+    box-shadow: 0 4px 16px rgba(99,102,241,0.08);
+}
+
+.perspective-card h4 {
+    margin-top: 0.2em !important;
+    color: var(--md-primary-fg-color) !important;
+}
+
+.scene-badge {
+    display: inline-block;
+    padding: 0.15em 0.6em;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+}
+
+.badge-1 { background: rgba(99,102,241,0.1); color: #6366f1; }
+.badge-2 { background: rgba(139,92,246,0.1); color: #8b5cf6; }
+.badge-3 { background: rgba(236,72,153,0.08); color: #ec4899; }
+
+.scene-img {
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin: 1em auto;
+    display: block;
+    max-width: 100%;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.scene-img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.16);
+}
+
+/* ========================================
+   Admonition 美化
+   ======================================== */
+.md-typeset .admonition,
+.md-typeset details {
     border-radius: 10px;
     border: none;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-.md-typeset .admonition-title {
+.md-typeset .admonition-title,
+.md-typeset summary {
     border-radius: 10px 10px 0 0;
     font-weight: 600;
 }
@@ -296,9 +432,7 @@
 /* ========================================
    导航栏
    ======================================== */
-.md-nav__item {
-    margin-bottom: 1px;
-}
+.md-nav__item { margin-bottom: 1px; }
 
 .md-nav__link {
     border-radius: 8px;
@@ -306,17 +440,16 @@
 }
 
 .md-nav__link:hover {
-    background: color-mix(in srgb, var(--md-accent-fg-color) 10%, transparent);
+    background: rgba(167,139,250,0.08);
 }
 
 .md-nav__link--active {
     font-weight: 600;
-    background: color-mix(in srgb, var(--md-accent-fg-color) 12%, transparent);
+    background: rgba(167,139,250,0.1);
 }
 
-/* 顶部标签栏 */
 .md-tabs {
-    background: linear-gradient(180deg, var(--md-primary-fg-color--dark), color-mix(in srgb, var(--md-primary-fg-color--dark) 90%, transparent));
+    background: linear-gradient(180deg, var(--md-primary-fg-color--dark), rgba(79,70,229,0.92));
 }
 
 .md-tabs__link {
@@ -328,7 +461,6 @@
     font-weight: 700;
 }
 
-/* 搜索框 */
 .md-search__input {
     border-radius: 20px;
     padding: 0.4em 1em;
@@ -336,15 +468,10 @@
 }
 
 .md-search__input:focus {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-accent-fg-color) 20%, transparent);
+    box-shadow: 0 0 0 3px rgba(167,139,250,0.2);
 }
 
-/* 页脚 */
-.md-footer {
-    margin-top: 2em;
-}
-
-/* --- 内容导航（右侧目录）--- */
+/* 右侧目录 */
 .md-sidebar--secondary .md-nav__link {
     font-size: 0.8em;
     opacity: 0.6;
@@ -364,9 +491,8 @@
    ======================================== */
 @media screen and (max-width: 76.1875em) {
     .md-content__inner {
-        padding: 1em 1.3em;
+        padding: 1em 1.3em 2.5em;
     }
-
     .md-content {
         font-size: 15.5px;
     }
@@ -374,7 +500,7 @@
 
 @media screen and (max-width: 44.9375em) {
     .md-content__inner {
-        padding: 0.8em 0.9em;
+        padding: 0.7em 0.8em 2em;
     }
 
     .md-content {
@@ -382,43 +508,37 @@
         line-height: 1.8;
     }
 
-    .md-content h1 {
-        font-size: 1.6em;
-    }
-
-    .md-content h1:first-of-type {
-        font-size: 2em;
-    }
-
+    .md-content h1 { font-size: 1.55em; }
+    .md-content h1:first-of-type { font-size: 1.9em; }
     .md-content h2 {
-        font-size: 1.3em;
-        padding: 0.25em 0 0.25em 0.5em;
-        margin-top: 1.5em;
+        font-size: 1.25em;
+        padding: 0.2em 0 0.2em 0.5em;
+        margin-top: 1.3em;
     }
-
-    .md-content h3 {
-        font-size: 1.12em;
-    }
+    .md-content h3 { font-size: 1.1em; }
 
     /* 图片 */
-    .md-content img {
+    .md-content img,
+    .md-content .scene-img {
         border-radius: 8px;
-        margin: 1em auto;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        margin: 0.8em auto;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        width: 100% !important;
+        max-width: 100%;
     }
 
-    .md-content img:hover {
+    .md-content img:hover,
+    .md-content .scene-img:hover {
         transform: none;
     }
 
-    /* 表格横向滚动 */
+    /* 表格 */
     .md-content table {
         display: block;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         font-size: 0.88em;
     }
-
     .md-content table thead,
     .md-content table tbody,
     .md-content table tr,
@@ -427,18 +547,73 @@
         display: revert;
     }
 
-    /* 卡片单列 */
-    .md-typeset .grid.cards > ul {
+    /* 卡片 */
+    .hero-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.7em;
+    }
+
+    .hero-card {
+        padding: 1em 0.9em 0.9em;
+    }
+
+    .hero-card:hover {
+        transform: none;
+    }
+
+    .hero-card .card-icon {
+        width: 36px; height: 36px;
+        font-size: 0.95em;
+        margin-bottom: 0.3em;
+    }
+
+    .hero-card .card-title {
+        font-size: 0.98em;
+    }
+
+    .hero-card .card-desc {
+        font-size: 0.78em;
+        display: none;
+    }
+
+    .hero-card .card-link {
+        font-size: 0.78em;
+    }
+
+    /* 透视卡片 */
+    .perspective-grid {
         grid-template-columns: 1fr;
         gap: 0.8em;
     }
 
-    .md-typeset .grid.cards > ul > li {
-        padding: 1em 1.1em;
+    .perspective-card {
+        padding: 0.9em;
     }
 
-    .md-typeset .grid.cards > ul > li:hover {
-        transform: none;
+    /* section title */
+    .section-title {
+        font-size: 1.3em;
+        margin: 1.5em 0 0.6em;
+    }
+
+    /* 提示框 */
+    .tip-box {
+        padding: 0.8em 1em;
+        gap: 0.6em;
+        font-size: 0.92em;
+    }
+
+    .tip-box .tip-icon {
+        font-size: 1.2em;
+    }
+
+    /* 课程标签 */
+    .course-tags {
+        gap: 0.35em;
+    }
+    .course-tag {
+        padding: 0.25em 0.7em;
+        font-size: 0.82em;
     }
 
     /* 引用 */
@@ -462,59 +637,71 @@
         font-size: 0.93em;
     }
 
-    /* 隐藏右侧目录 */
     .md-sidebar--secondary {
         display: none;
     }
 
-    /* 顶部 */
     .md-header {
-        padding: 0 0.6em;
+        padding: 0 0.5em;
     }
 
     .md-tabs {
-        padding: 0 0.6em;
+        padding: 0 0.5em;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
 
     .md-tabs__link {
         white-space: nowrap;
-        font-size: 0.88em;
-        padding: 0.5em 0.7em;
+        font-size: 0.85em;
+        padding: 0.45em 0.6em;
+    }
+}
+
+/* 极小屏幕 */
+@media screen and (max-width: 22em) {
+    .hero-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .md-content h1:first-of-type {
+        font-size: 1.6em;
     }
 }
 
 /* ========================================
    暗色模式
    ======================================== */
-[data-md-color-scheme="slate"] .md-content img {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.2);
+[data-md-color-scheme="slate"] .md-content img,
+[data-md-color-scheme="slate"] .md-content .scene-img {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.2);
 }
 
-[data-md-color-scheme="slate"] .md-content img:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.25);
+[data-md-color-scheme="slate"] .md-content img:hover,
+[data-md-color-scheme="slate"] .md-content .scene-img:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25);
 }
 
 [data-md-color-scheme="slate"] .md-content table {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 }
 
 [data-md-color-scheme="slate"] .md-content table thead {
-    background: linear-gradient(135deg, color-mix(in srgb, var(--md-primary-fg-color) 80%, white), var(--md-primary-fg-color));
+    background: linear-gradient(135deg, rgba(129,140,248,0.8), var(--md-primary-fg-color));
 }
 
-[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li {
-    border-color: color-mix(in srgb, var(--md-default-fg-color) 10%, transparent);
-    background: color-mix(in srgb, var(--md-default-bg-color) 40%, transparent);
+[data-md-color-scheme="slate"] .perspective-card {
+    border-color: rgba(129,140,248,0.1);
+    background: rgba(129,140,248,0.03);
 }
 
-[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+[data-md-color-scheme="slate"] .perspective-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
-[data-md-color-scheme="slate"] .md-typeset .admonition {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+[data-md-color-scheme="slate"] .admonition,
+[data-md-color-scheme="slate"] details {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
 
 /* --- 全局 --- */
@@ -527,19 +714,17 @@ html {
     .md-sidebar, .md-header, .md-tabs, .md-footer, .md-content__button {
         display: none !important;
     }
-
     .md-content__inner {
         max-width: 100%;
         padding: 0;
     }
-
     .md-content img {
         box-shadow: none;
         border: 1px solid #ddd;
     }
-
-    .md-typeset .grid.cards > ul > li {
+    .hero-card {
         border: 1px solid #ddd;
         box-shadow: none;
     }
+    .hero-card::before { display: none; }
 }
