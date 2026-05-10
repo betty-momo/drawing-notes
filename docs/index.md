@@ -153,13 +153,9 @@
 }
 </style>
 
+<div class="section-title">基础知识</div>
+
 <div class="hero-cards">
-    <a class="hero-card" href="起草/人体.md">
-        <span class="card-icon">起</span>
-        <div class="card-title">起草</div>
-        <div class="card-desc">人体动态 · 体块概括 · 骨架肌肉</div>
-        <span class="card-link">开始学习 →</span>
-    </a>
     <a class="hero-card" href="人体知识.md">
         <span class="card-icon">人</span>
         <div class="card-title">人体知识</div>
@@ -172,10 +168,39 @@
         <div class="card-desc">一点透视 · 两点透视 · 三点透视 · 结构概括</div>
         <span class="card-link">查看详情 →</span>
     </a>
-    <a class="hero-card" href="上色流程/勾线.md">
+    <a class="hero-card" href="色彩知识.md">
         <span class="card-icon">色</span>
-        <div class="card-title">上色流程</div>
-        <div class="card-desc">勾线 → 固有色 → 二分 → 三分 → 高光 → 塑造</div>
+        <div class="card-title">色彩知识</div>
+        <div class="card-desc">正片叠底 · 滤色 · 叠加 · 图层混合</div>
+        <span class="card-link">查看详情 →</span>
+    </a>
+</div>
+
+<div class="section-title">绘画流程</div>
+
+<div class="hero-cards">
+    <a class="hero-card" href="流程/起草.md">
+        <span class="card-icon">起</span>
+        <div class="card-title">起草</div>
+        <div class="card-desc">人体动态 · 体块概括 · 透视线</div>
+        <span class="card-link">开始学习 →</span>
+    </a>
+    <a class="hero-card" href="流程/勾线.md">
+        <span class="card-icon">线</span>
+        <div class="card-title">勾线</div>
+        <div class="card-desc">粗细变化 · 闭塞 · 断线 · 蒙版</div>
+        <span class="card-link">查看流程 →</span>
+    </a>
+    <a class="hero-card" href="流程/二分.md">
+        <span class="card-icon">明</span>
+        <div class="card-title">二分</div>
+        <div class="card-desc">光源判断 · 阴影细化 · 叠加染色</div>
+        <span class="card-link">查看流程 →</span>
+    </a>
+    <a class="hero-card" href="流程/高光.md">
+        <span class="card-icon">亮</span>
+        <div class="card-title">高光与塑造</div>
+        <div class="card-desc">高光 · 反光 · 塑造 · 光源衰减</div>
         <span class="card-link">查看流程 →</span>
     </a>
 </div>
