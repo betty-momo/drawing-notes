@@ -1,5 +1,5 @@
 site_name: 绘画笔记
-site_description: 个人学习绘画之路
+site_description: 从零开始的二次元绘画学习之路
 site_url: https://betty-momo.github.io/drawing-notes/
 use_directory_urls: false
 
@@ -11,14 +11,14 @@ theme:
     code: Fira Code
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-7
         name: 切换到暗色模式
     - scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
         name: 切换到亮色模式
@@ -30,16 +30,23 @@ theme:
     - navigation.tabs.sticky
     - navigation.instant
     - navigation.instant.progress
+    - navigation.indexes
     - search.highlight
     - search.suggest
     - search.share
     - content.code.copy
     - content.tooltips
+    - content.tabs.link
   icon:
     repo: fontawesome/brands/github
 
 extra_css:
   - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/betty-momo
 
 nav:
   - 首页: index.md
@@ -78,3 +85,6 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.mark
   - pymdownx.keys
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
