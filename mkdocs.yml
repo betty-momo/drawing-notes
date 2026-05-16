@@ -1,5 +1,5 @@
 site_name: 绘画笔记
-site_description: 从零开始的二次元绘画学习之路
+site_description: 白灰金调的二次元绘画学习笔记
 site_url: https://betty-momo.github.io/drawing-notes/
 use_directory_urls: false
 
@@ -7,21 +7,21 @@ theme:
   name: material
   language: zh
   font:
-    text: Noto Sans SC
+    text: Noto Serif SC
     code: Fira Code
   palette:
-    - scheme: slate
-      primary: custom
-      accent: custom
-      toggle:
-        icon: material/weather-night
-        name: 切换到雾白模式
     - scheme: default
       primary: custom
       accent: custom
       toggle:
+        icon: material/weather-night
+        name: 切换到夜幕模式
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
         icon: material/weather-sunny
-        name: 切换到夜色模式
+        name: 切换到雾白模式
   features:
     - navigation.sections
     - navigation.expand
@@ -31,6 +31,7 @@ theme:
     - navigation.instant
     - navigation.instant.progress
     - navigation.indexes
+    - navigation.footer
     - search.highlight
     - search.suggest
     - search.share
@@ -38,12 +39,14 @@ theme:
     - content.tooltips
     - content.tabs.link
   icon:
+    logo: material/flower
     repo: fontawesome/brands/github
 
 extra_css:
   - stylesheets/extra.css
 
 extra:
+  generator: false
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/betty-momo
