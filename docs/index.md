@@ -2,156 +2,24 @@
 
 > 从零开始的二次元绘画学习之路
 
-<style>
-.hero-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.1em;
-    margin: 1.5em 0 2em;
-    padding: 0;
-    list-style: none;
-}
-.hero-card {
-    border: 1px solid rgba(99,102,241,0.12);
-    border-radius: 14px;
-    padding: 1.5em 1.3em 1.2em;
-    transition: all 0.25s ease;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, rgba(99,102,241,0.03), rgba(167,139,250,0.03));
-    text-decoration: none;
-    display: block;
-    color: inherit;
-}
-.hero-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(99,102,241,0.12);
-    border-color: rgba(167,139,250,0.35);
-    text-decoration: none;
-    color: inherit;
-}
-.hero-card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #6366f1, #a78bfa);
-    opacity: 0;
-    transition: opacity 0.25s ease;
-}
-.hero-card:hover::before { opacity: 1; }
-.hero-card .card-icon {
-    font-size: 2em;
-    margin-bottom: 0.4em;
-    display: block;
-    width: 48px; height: 48px;
-    line-height: 48px;
-    text-align: center;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #6366f1, #a78bfa);
-    color: #fff;
-    font-weight: 700;
-}
-.hero-card .card-title {
-    font-size: 1.15em;
-    font-weight: 700;
-    margin-bottom: 0.3em;
-    color: var(--md-primary-fg-color);
-}
-.hero-card .card-desc {
-    font-size: 0.88em;
-    color: rgba(0,0,0,0.5);
-    line-height: 1.5;
-    margin-bottom: 0.5em;
-}
-.hero-card .card-link {
-    font-size: 0.85em;
-    font-weight: 600;
-    color: var(--md-accent-fg-color);
-}
-[data-md-color-scheme="slate"] .hero-card {
-    border-color: rgba(129,140,248,0.15);
-    background: linear-gradient(135deg, rgba(129,140,248,0.05), rgba(196,181,253,0.03));
-}
-[data-md-color-scheme="slate"] .hero-card:hover {
-    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-    border-color: rgba(196,181,253,0.3);
-}
-[data-md-color-scheme="slate"] .hero-card .card-desc {
-    color: rgba(255,255,255,0.45);
-}
-.section-title {
-    font-size: 1.5em;
-    font-weight: 700;
-    margin: 2em 0 0.8em;
-    padding-left: 0.55em;
-    border-left: 4px solid #a78bfa;
-    background: linear-gradient(90deg, rgba(167,139,250,0.06), transparent);
-    border-radius: 0 8px 8px 0;
-    padding-top: 0.25em;
-    padding-bottom: 0.25em;
-}
-.tip-box {
-    border-radius: 12px;
-    padding: 1.2em 1.5em;
-    margin: 1em 0;
-    display: flex;
-    gap: 1em;
-    align-items: flex-start;
-}
-.tip-box .tip-icon {
-    font-size: 1.5em;
-    flex-shrink: 0;
-    margin-top: 0.05em;
-}
-.tip-box.tip {
-    background: linear-gradient(135deg, rgba(52,211,153,0.08), rgba(52,211,153,0.03));
-    border: 1px solid rgba(52,211,153,0.2);
-}
-.tip-box.info {
-    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(99,102,241,0.03));
-    border: 1px solid rgba(99,102,241,0.15);
-}
-.course-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5em;
-    margin: 0.8em 0;
-}
-.course-tag {
-    display: inline-block;
-    padding: 0.35em 0.9em;
-    border-radius: 20px;
-    font-size: 0.88em;
-    font-weight: 500;
-    background: rgba(99,102,241,0.07);
-    color: var(--md-primary-fg-color);
-    border: 1px solid rgba(99,102,241,0.12);
-    transition: all 0.15s ease;
-}
-.course-tag:hover {
-    background: rgba(99,102,241,0.12);
-    border-color: rgba(99,102,241,0.25);
-}
-.flow-steps {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3em;
-    align-items: center;
-    margin: 0.6em 0 1em;
-    font-size: 0.92em;
-}
-.flow-step {
-    padding: 0.3em 0.7em;
-    background: rgba(99,102,241,0.07);
-    border-radius: 6px;
-    font-weight: 500;
-}
-.flow-arrow {
-    color: var(--md-accent-fg-color);
-    font-weight: 700;
-}
-</style>
+<div class="home-hero">
+    <div class="home-kicker">NOTES / ROUTE / REVIEW</div>
+    <p class="home-summary">把零散课程、临摹观察和每次画图踩过的坑，整理成可复习的绘画路线。先看流程建立步骤感，再回到基础和专题补结构。</p>
+</div>
+
+<div class="learning-route">
+    <div class="route-kicker">学习路线</div>
+    <div class="flow-steps">
+        <a class="flow-step" href="流程/起草.html"><span>01</span>起草</a>
+        <a class="flow-step" href="流程/勾线.html"><span>02</span>勾线</a>
+        <a class="flow-step" href="流程/固有色.html"><span>03</span>固有色</a>
+        <a class="flow-step" href="流程/二分.html"><span>04</span>二分</a>
+        <a class="flow-step" href="流程/三分.html"><span>05</span>三分</a>
+        <a class="flow-step" href="流程/闭塞.html"><span>06</span>闭塞</a>
+        <a class="flow-step" href="流程/灰面.html"><span>07</span>灰面</a>
+        <a class="flow-step" href="流程/高光.html"><span>08</span>高光</a>
+    </div>
+</div>
 
 <div class="section-title">基础知识</div>
 
@@ -160,19 +28,19 @@
         <span class="card-icon">人</span>
         <div class="card-title">人体知识</div>
         <div class="card-desc">五官比例 · 头肩颈 · 腰腹 · 腿部 · 手臂</div>
-        <span class="card-link">查看详情 →</span>
+        <span class="card-link">查看详情 -></span>
     </a>
     <a class="hero-card" href="场景知识.html">
         <span class="card-icon">场</span>
         <div class="card-title">场景知识</div>
         <div class="card-desc">一点透视 · 两点透视 · 三点透视 · 结构概括</div>
-        <span class="card-link">查看详情 →</span>
+        <span class="card-link">查看详情 -></span>
     </a>
     <a class="hero-card" href="色彩知识.html">
         <span class="card-icon">色</span>
         <div class="card-title">色彩知识</div>
-        <div class="card-desc">正片叠底 · 滤色 · 叠加 · 图层混合</div>
-        <span class="card-link">查看详情 →</span>
+        <div class="card-desc">白色系偏好 · 正片叠底 · 滤色 · 叠加</div>
+        <span class="card-link">查看详情 -></span>
     </a>
 </div>
 
@@ -183,26 +51,56 @@
         <span class="card-icon">起</span>
         <div class="card-title">起草</div>
         <div class="card-desc">人体动态 · 体块概括 · 透视线</div>
-        <span class="card-link">开始学习 →</span>
+        <span class="card-link">开始学习 -></span>
     </a>
     <a class="hero-card" href="流程/勾线.html">
         <span class="card-icon">线</span>
         <div class="card-title">勾线</div>
         <div class="card-desc">粗细变化 · 闭塞 · 断线 · 蒙版</div>
-        <span class="card-link">查看流程 →</span>
+        <span class="card-link">查看流程 -></span>
+    </a>
+    <a class="hero-card" href="流程/固有色.html">
+        <span class="card-icon">底</span>
+        <div class="card-title">固有色</div>
+        <div class="card-desc">灰底铺色 · 固有色选择 · 特殊处理</div>
+        <span class="card-link">查看流程 -></span>
     </a>
     <a class="hero-card" href="流程/二分.html">
         <span class="card-icon">明</span>
         <div class="card-title">二分</div>
         <div class="card-desc">光源判断 · 阴影细化 · 叠加染色</div>
-        <span class="card-link">查看流程 →</span>
+        <span class="card-link">查看流程 -></span>
+    </a>
+    <a class="hero-card" href="流程/三分.html">
+        <span class="card-icon">三</span>
+        <div class="card-title">三分</div>
+        <div class="card-desc">腮红 · 弱结构阴影 · 眼白眼影 · 嘴唇</div>
+        <span class="card-link">查看流程 -></span>
+    </a>
+    <a class="hero-card" href="流程/闭塞.html">
+        <span class="card-icon">暗</span>
+        <div class="card-title">闭塞</div>
+        <div class="card-desc">接触面 · 转折处 · 遮挡处</div>
+        <span class="card-link">查看流程 -></span>
+    </a>
+    <a class="hero-card" href="流程/灰面.html">
+        <span class="card-icon">灰</span>
+        <div class="card-title">灰面</div>
+        <div class="card-desc">选区笔喷枪 · 眼睫毛 · 眼球 · 头发画法</div>
+        <span class="card-link">查看流程 -></span>
     </a>
     <a class="hero-card" href="流程/高光.html">
-        <span class="card-icon">亮</span>
-        <div class="card-title">高光与塑造</div>
-        <div class="card-desc">高光 · 反光 · 塑造 · 光源衰减</div>
-        <span class="card-link">查看流程 →</span>
+        <span class="card-icon">光</span>
+        <div class="card-title">高光</div>
+        <div class="card-desc">面部高光 · 图层混合模式</div>
+        <span class="card-link">查看流程 -></span>
     </a>
+</div>
+
+<div class="pending-links">
+    <a class="pending-link" href="流程/反光.html">待补完：反光</a>
+    <a class="pending-link" href="流程/塑造.html">待补完：塑造</a>
+    <a class="pending-link" href="流程/光源衰减.html">待补完：光源衰减</a>
 </div>
 
 <div class="section-title">专题深入</div>
@@ -212,25 +110,31 @@
         <span class="card-icon">眼</span>
         <div class="card-title">眼睛上色</div>
         <div class="card-desc">瞳孔 · 虹膜 · 高光 · 反光 · 睫毛</div>
-        <span class="card-link">阅读 →</span>
+        <span class="card-link">阅读 -></span>
     </a>
     <a class="hero-card" href="专题/头发塑造.html">
         <span class="card-icon">发</span>
         <div class="card-title">头发塑造</div>
         <div class="card-desc">二分细化 · 灰面 · 高光 · 反光 · 线稿染色</div>
-        <span class="card-link">阅读 →</span>
+        <span class="card-link">阅读 -></span>
     </a>
     <a class="hero-card" href="专题/皮肤塑造.html">
         <span class="card-icon">肤</span>
         <div class="card-title">皮肤塑造</div>
         <div class="card-desc">腮红 · 阴影 · 暗面 · 高光 · 面部细节</div>
-        <span class="card-link">阅读 →</span>
+        <span class="card-link">阅读 -></span>
     </a>
     <a class="hero-card" href="专题/衣褶.html">
         <span class="card-icon">褶</span>
         <div class="card-title">衣褶刻画</div>
         <div class="card-desc">取舍思路 · 阴影刻画 · 简化完成</div>
-        <span class="card-link">阅读 →</span>
+        <span class="card-link">阅读 -></span>
+    </a>
+    <a class="hero-card" href="专题/泳装衣褶.html">
+        <span class="card-icon">泳</span>
+        <div class="card-title">泳装衣褶</div>
+        <div class="card-desc">受力区域 · 材质贴合 · 褶皱简化</div>
+        <span class="card-link">阅读 -></span>
     </a>
 </div>
 
@@ -263,7 +167,7 @@
 <div class="section-title">画前准备</div>
 
 <div class="tip-box tip">
-    <span class="tip-icon">🎨</span>
+    <span class="tip-icon">参</span>
     <div>
         <strong>找参考</strong><br>
         花瓣网 · Pinterest · 小红书 · 微博
@@ -271,9 +175,9 @@
 </div>
 
 <div class="tip-box info">
-    <span class="tip-icon">💡</span>
+    <span class="tip-icon">灰</span>
     <div>
-        <strong>小技巧</strong><br>
+        <strong>检查黑白灰</strong><br>
         创建一个<strong>黑色饱和度图层</strong>位于最上部，便于观察画面整体黑白灰关系。
     </div>
 </div>
