@@ -89,66 +89,18 @@ html {
 
 body {
     color: var(--lily-ink);
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.46), transparent 18rem),
-        linear-gradient(115deg, rgba(199, 169, 99, 0.12), transparent 38%),
-        linear-gradient(270deg, rgba(126, 128, 111, 0.09), transparent 32%),
-        var(--lily-bg);
+    background: var(--lily-bg);
     font-family: var(--lily-font-body);
     letter-spacing: 0;
 }
 
 [data-md-color-scheme="slate"] body {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 17rem),
-        linear-gradient(116deg, rgba(209, 179, 102, 0.1), transparent 40%),
-        linear-gradient(270deg, rgba(247, 242, 230, 0.045), transparent 30%),
-        var(--lily-bg);
+    background: var(--lily-bg);
 }
 
 body::before,
 body::after {
-    content: "";
-    position: fixed;
-    pointer-events: none;
-}
-
-body::before {
-    inset: 0;
-    z-index: 0;
-    opacity: 0.65;
-    background:
-        linear-gradient(90deg, transparent 0 6rem, rgba(164, 122, 43, 0.09) 6rem 6.05rem, transparent 6.05rem),
-        radial-gradient(ellipse 42rem 18rem at 82% -8rem, rgba(255, 253, 245, 0.78), transparent 70%),
-        radial-gradient(ellipse 30rem 14rem at 5% 16rem, rgba(184, 178, 164, 0.24), transparent 72%);
-}
-
-body::after {
-    right: clamp(0.5rem, 5vw, 4.5rem);
-    top: 8.5rem;
-    width: 10rem;
-    height: 31rem;
-    z-index: 0;
-    opacity: 0.34;
-    background:
-        radial-gradient(ellipse 1.1rem 3.2rem at 46% 9%, rgba(255, 253, 245, 0.8) 0 47%, transparent 49%),
-        radial-gradient(ellipse 1rem 3rem at 60% 10%, rgba(255, 253, 245, 0.68) 0 47%, transparent 49%),
-        radial-gradient(ellipse 1rem 3rem at 34% 11%, rgba(255, 253, 245, 0.68) 0 47%, transparent 49%),
-        linear-gradient(166deg, transparent 0 16%, var(--lily-gold) 16.3% 16.7%, transparent 17% 100%),
-        linear-gradient(182deg, transparent 0 20%, var(--lily-stem) 20.2% 20.45%, transparent 20.7% 100%);
-    filter: blur(0.1px);
-}
-
-[data-md-color-scheme="slate"] body::before {
-    opacity: 0.72;
-    background:
-        linear-gradient(90deg, transparent 0 6rem, rgba(209, 179, 102, 0.12) 6rem 6.04rem, transparent 6.04rem),
-        radial-gradient(ellipse 40rem 17rem at 80% -8rem, rgba(247, 242, 230, 0.1), transparent 70%),
-        radial-gradient(ellipse 30rem 14rem at 4% 16rem, rgba(209, 179, 102, 0.07), transparent 74%);
-}
-
-[data-md-color-scheme="slate"] body::after {
-    opacity: 0.25;
+    display: none;
 }
 
 .md-container,
@@ -1318,19 +1270,6 @@ a {
 
 /* --- Mobile --- */
 @media screen and (max-width: 76.1875em) {
-    body::before {
-        background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.26), transparent 15rem),
-            linear-gradient(115deg, rgba(199, 169, 99, 0.1), transparent 40%),
-            var(--lily-bg);
-    }
-
-    body::after {
-        right: -3.5rem;
-        top: 7rem;
-        opacity: 0.2;
-    }
-
     .md-content__inner {
         padding: 1em 1.25em 2.8em;
     }
@@ -1375,10 +1314,6 @@ a {
 }
 
 @media screen and (max-width: 44.9375em) {
-    body::after {
-        display: none;
-    }
-
     .md-content__inner {
         padding: 0.75em 0.85em 2.2em;
     }
