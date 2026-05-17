@@ -9,23 +9,55 @@
   };
 
   const musicTracks = [
-    { name: "fuwari", notes: [261.63, 329.63, 392, 523.25, 392, 329.63], wave: "triangle", interval: 780 },
-    { name: "芜菁f", notes: [293.66, 349.23, 440, 587.33, 523.25, 440], wave: "sine", interval: 720 },
-    { name: "曼奇立德", notes: [220, 277.18, 329.63, 415.3, 369.99, 277.18], wave: "triangle", interval: 840 },
+    { name: "练习脉冲", notes: [261.63, 329.63, 392, 523.25, 392, 329.63], wave: "triangle", interval: 780 },
+    { name: "夜色回路", notes: [293.66, 349.23, 440, 587.33, 523.25, 440], wave: "sine", interval: 720 },
+    { name: "高光节拍", notes: [220, 277.18, 329.63, 415.3, 369.99, 277.18], wave: "triangle", interval: 840 },
   ];
+
+  const musicSettings = {
+    volume: 0.055,
+    tempo: 1,
+    tone: 0,
+  };
 
   let music = null;
   let musicTrackIndex = 0;
+  let musicUi = null;
+
+  const musicInterval = (track) => Math.max(220, track.interval / musicSettings.tempo);
+
+  const setMusicUi = () => {
+    if (!musicUi) return;
+    const track = music?.track || musicTracks[(musicTrackIndex + musicTracks.length - 1) % musicTracks.length] || musicTracks[0];
+    const active = Boolean(music);
+    musicUi.audio.classList.toggle("is-active", active);
+    musicUi.audio.setAttribute("aria-pressed", String(active));
+    musicUi.audio.title = active ? `音乐：${track.name}` : "音乐";
+    musicUi.audio.setAttribute("aria-label", active ? `音乐：${track.name}` : "音乐");
+    musicUi.panel.classList.toggle("is-playing", active);
+    musicUi.track.textContent = track.name;
+    musicUi.playText.textContent = active ? "暂停" : "播放";
+  };
+
+  const syncMusicSettings = () => {
+    if (!music) return;
+    music.master.gain.cancelScheduledValues(music.context.currentTime);
+    music.master.gain.setTargetAtTime(musicSettings.volume, music.context.currentTime, 0.06);
+    window.clearInterval(music.timer);
+    music.timer = window.setInterval(music.playNote, musicInterval(music.track));
+  };
 
   const stopMusic = () => {
     if (!music) return;
-    window.clearInterval(music.timer);
-    music.master.gain.cancelScheduledValues(music.context.currentTime);
-    music.master.gain.setTargetAtTime(0, music.context.currentTime, 0.05);
+    const current = music;
+    music = null;
+    window.clearInterval(current.timer);
+    current.master.gain.cancelScheduledValues(current.context.currentTime);
+    current.master.gain.setTargetAtTime(0, current.context.currentTime, 0.05);
     window.setTimeout(() => {
-      music.context.close();
-      music = null;
+      current.context.close();
     }, 180);
+    setMusicUi();
   };
 
   const startMusic = async () => {
@@ -50,14 +82,14 @@
     feedback.connect(delay);
     delay.connect(master);
     master.connect(context.destination);
-    master.gain.setTargetAtTime(0.055, context.currentTime, 0.08);
+    master.gain.setTargetAtTime(musicSettings.volume, context.currentTime, 0.08);
 
     const playNote = () => {
       const now = context.currentTime;
       const osc = context.createOscillator();
       const gain = context.createGain();
       osc.type = track.wave;
-      osc.frequency.value = notes[step % notes.length];
+      osc.frequency.value = notes[step % notes.length] * Math.pow(2, musicSettings.tone / 1200);
       gain.gain.setValueAtTime(0, now);
       gain.gain.linearRampToValueAtTime(0.16, now + 0.012);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.62);
@@ -78,9 +110,11 @@
       context,
       master,
       track,
-      timer: window.setInterval(playNote, track.interval),
+      playNote,
+      timer: window.setInterval(playNote, musicInterval(track)),
     };
 
+    setMusicUi();
     return track;
   };
 
@@ -96,28 +130,86 @@
     audio.className = "neo-action neo-action--audio";
     audio.setAttribute("aria-label", "音乐");
     audio.setAttribute("aria-pressed", "false");
-    audio.addEventListener("click", async () => {
-      const willPlay = audio.getAttribute("aria-pressed") !== "true";
-      if (willPlay) {
-        const track = await startMusic();
-        if (!track) return;
-        audio.title = `音乐：${track.name}`;
-        audio.setAttribute("aria-label", `音乐：${track.name}`);
-      } else {
-        stopMusic();
-        audio.title = "音乐";
-        audio.setAttribute("aria-label", "音乐");
-      }
-      audio.setAttribute("aria-pressed", String(willPlay));
-      audio.classList.toggle("is-active", willPlay);
-    });
 
     const portfolio = document.createElement("a");
     portfolio.className = "neo-action neo-action--portfolio";
     portfolio.href = `${pageBase()}作品集.html`;
     portfolio.textContent = "作品集";
 
-    actions.append(audio, portfolio);
+    const panel = document.createElement("div");
+    panel.className = "neo-music-panel";
+    panel.innerHTML = `
+      <div class="neo-music-panel__head">
+        <button class="neo-music-disc" type="button" data-music-play aria-label="播放或暂停音乐"></button>
+        <div class="neo-music-title">
+          <span>LOOP PLAYER</span>
+          <strong data-music-track>${musicTracks[0].name}</strong>
+        </div>
+      </div>
+      <div class="neo-music-controls">
+        <label>音量<input data-music-volume type="range" min="0" max="0.12" step="0.005" value="${musicSettings.volume}"></label>
+        <label>速度<input data-music-tempo type="range" min="0.72" max="1.38" step="0.02" value="${musicSettings.tempo}"></label>
+        <label>音色<input data-music-tone type="range" min="-80" max="80" step="10" value="${musicSettings.tone}"></label>
+      </div>
+      <div class="neo-music-actions">
+        <button type="button" data-music-play-text>播放</button>
+        <button type="button" data-music-next>切换曲型</button>
+      </div>
+    `;
+
+    const togglePlayback = async () => {
+      if (music) {
+        stopMusic();
+      } else {
+        await startMusic();
+      }
+      setMusicUi();
+    };
+
+    const setPanelOpen = (open) => {
+      panel.classList.toggle("is-open", open);
+      panel.style.opacity = open ? "1" : "";
+      panel.style.transform = open ? "translateY(0)" : "";
+    };
+
+    musicUi = {
+      audio,
+      panel,
+      track: panel.querySelector("[data-music-track]"),
+      playText: panel.querySelector("[data-music-play-text]"),
+    };
+
+    audio.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      setPanelOpen(!panel.classList.contains("is-open"));
+      await togglePlayback();
+    });
+
+    panel.querySelector("[data-music-play]").addEventListener("click", togglePlayback);
+    panel.querySelector("[data-music-play-text]").addEventListener("click", togglePlayback);
+    panel.querySelector("[data-music-next]").addEventListener("click", async () => {
+      const wasPlaying = Boolean(music);
+      stopMusic();
+      if (wasPlaying) await startMusic();
+      setMusicUi();
+    });
+    panel.querySelector("[data-music-volume]").addEventListener("input", (event) => {
+      musicSettings.volume = Number(event.target.value);
+      syncMusicSettings();
+    });
+    panel.querySelector("[data-music-tempo]").addEventListener("input", (event) => {
+      musicSettings.tempo = Number(event.target.value);
+      syncMusicSettings();
+    });
+    panel.querySelector("[data-music-tone]").addEventListener("input", (event) => {
+      musicSettings.tone = Number(event.target.value);
+    });
+    document.addEventListener("click", (event) => {
+      if (!actions.contains(event.target)) setPanelOpen(false);
+    });
+
+    actions.append(audio, portfolio, panel);
+    setMusicUi();
 
     const search = header.querySelector(".md-search");
     if (search) {
@@ -148,6 +240,103 @@
       image.setAttribute("alt", item.dataset.previewTitle || "");
       image.style.opacity = "";
     }, 80);
+  };
+
+  const readJsonData = (root, selector) => {
+    const source = root.querySelector(selector);
+    if (!source) return [];
+    try {
+      const data = JSON.parse(source.textContent || "[]");
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.warn("Drawing notes data parse failed", error);
+      return [];
+    }
+  };
+
+  const applyCourseDataset = (link, item) => {
+    link.dataset.previewKicker = item.kicker || "COURSE / SLOT";
+    link.dataset.previewTitle = item.title || "未命名课程";
+    link.dataset.previewDirection = item.direction || "待补充";
+    link.dataset.previewDesc = item.desc || "";
+    link.dataset.previewNote = item.note || "";
+    link.dataset.previewImg = item.img || "";
+  };
+
+  const applyPortfolioDataset = (link, item) => {
+    link.dataset.targetHref = item.targetHref || item.img || "#";
+    link.dataset.previewKicker = item.kicker || "PORTFOLIO";
+    link.dataset.previewRank = item.rank || "RANK";
+    link.dataset.previewRole = item.role || "作品档案";
+    link.dataset.previewTitle = item.title || "未命名作品";
+    link.dataset.previewDate = item.date || "待补充";
+    link.dataset.previewDesc = item.desc || "";
+    link.dataset.previewNote = item.note || "";
+    link.dataset.previewImg = item.img || "";
+    link.dataset.previewAccent = item.accent || "#47e8ff";
+  };
+
+  const makeImage = (src, alt = "") => {
+    const image = document.createElement("img");
+    image.src = src;
+    image.alt = alt;
+    return image;
+  };
+
+  const renderCourseData = () => {
+    document.querySelectorAll(".course-showcase").forEach((root) => {
+      if (root.dataset.dataReady === "true") return;
+      const items = readJsonData(root, ".course-data");
+      const roster = root.querySelector(".course-roster");
+      if (!items.length || !roster) return;
+
+      roster.replaceChildren(...items.map((item, index) => {
+        const link = document.createElement("a");
+        link.href = item.href || "#";
+        link.classList.toggle("is-active", index === 0);
+        applyCourseDataset(link, item);
+        link.append(makeImage(item.img || "", item.title || ""));
+
+        const label = document.createElement("span");
+        const title = document.createElement("strong");
+        const direction = document.createElement("small");
+        title.textContent = item.title || "未命名课程";
+        direction.textContent = item.direction || "待补充";
+        label.append(title, direction);
+        link.append(label);
+        return link;
+      }));
+      root.dataset.dataReady = "true";
+    });
+  };
+
+  const renderPortfolioData = () => {
+    document.querySelectorAll(".portfolio-showcase").forEach((root) => {
+      if (root.dataset.dataReady === "true") return;
+      const items = readJsonData(root, ".portfolio-data");
+      const roster = root.querySelector(".portfolio-roster");
+      if (!items.length || !roster) return;
+
+      roster.replaceChildren(...items.map((item, index) => {
+        const link = document.createElement("a");
+        link.href = `#${item.id || `portfolio-${String(index + 1).padStart(2, "0")}`}`;
+        link.classList.toggle("is-active", index === 0);
+        link.style.setProperty("--portfolio-accent", item.accent || "#47e8ff");
+        applyPortfolioDataset(link, item);
+        link.append(makeImage(item.img || "", item.title || ""));
+
+        const number = document.createElement("span");
+        number.textContent = String(index + 1).padStart(2, "0");
+        link.append(number);
+        return link;
+      }));
+      root.dataset.dataReady = "true";
+    });
+  };
+
+  const mountDataSections = () => {
+    renderCourseData();
+    renderPortfolioData();
   };
 
   const bindPreviewSwitcher = (root, linkSelector, targetSelector, update) => {
@@ -247,6 +436,7 @@
 
   const mountAll = () => {
     mountHeaderActions();
+    mountDataSections();
     mountPreviewSwitchers();
   };
 
