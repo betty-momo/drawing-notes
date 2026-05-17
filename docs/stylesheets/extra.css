@@ -1625,6 +1625,7 @@ a {
     width: clamp(9rem, 13vw, 12.6rem);
     margin-left: auto;
     flex: 0 0 auto;
+    position: relative;
 }
 
 .md-search:focus-within {
@@ -1640,6 +1641,16 @@ a {
 .md-header .md-search__inner {
     left: 0;
     right: auto;
+    position: relative;
+    top: auto;
+    transform: none;
+}
+
+.md-search__overlay,
+.md-search__output,
+.md-search__suggest,
+.md-search__scrollwrap {
+    display: none !important;
 }
 
 .md-search__form {
@@ -1710,7 +1721,7 @@ a {
 }
 
 .neo-action--audio::before {
-    content: "♪";
+    content: "\266B";
     font-size: 1.2rem;
 }
 
@@ -2529,6 +2540,237 @@ a {
     box-shadow: none;
 }
 
+.home-stage .course-showcase {
+    display: grid;
+    grid-template-columns: minmax(11rem, 0.26fr) minmax(26rem, 1fr);
+    grid-template-areas:
+        "roster feature"
+        "checks feature";
+    gap: clamp(0.8rem, 2vw, 1.25rem);
+    align-items: start;
+}
+
+.home-stage .course-roster {
+    display: grid;
+    grid-area: roster;
+    align-self: start;
+    align-content: center;
+    gap: 0.62rem;
+}
+
+.home-stage .course-roster a {
+    display: grid;
+    min-height: 3.72rem;
+    grid-template-columns: 2.64rem 1fr;
+    align-items: center;
+    gap: 0.56rem;
+    padding: 0.38rem 0.55rem;
+    color: var(--neo-ink) !important;
+    border: 1px solid rgba(245, 247, 255, 0.12);
+    background: rgba(8, 10, 18, 0.86);
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 0.85rem) 0, 100% 0.85rem, 100% 100%, 0.85rem 100%, 0 calc(100% - 0.85rem));
+}
+
+.home-stage .course-roster a:hover,
+.home-stage .course-roster a.is-active {
+    border-color: rgba(71, 232, 255, 0.62);
+    background: rgba(71, 232, 255, 0.13);
+}
+
+.home-stage .course-roster img {
+    display: block;
+    width: 2.64rem;
+    height: 2.64rem;
+    margin: 0;
+    padding: 0.11rem;
+    object-fit: cover;
+    border: 2px solid rgba(71, 232, 255, 0.72);
+    border-radius: 50%;
+    background: rgba(8, 10, 18, 0.94);
+    box-shadow:
+        inset 0 0 0 2px rgba(8, 10, 18, 0.88),
+        0 0 16px rgba(71, 232, 255, 0.16);
+}
+
+.home-stage .course-roster strong,
+.home-stage .course-roster small {
+    display: block;
+}
+
+.home-stage .course-roster strong {
+    color: var(--neo-ink);
+    font-size: 0.78rem;
+    line-height: 1.2;
+}
+
+.home-stage .course-roster small {
+    margin-top: 0.18rem;
+    color: var(--neo-muted);
+    font-size: 0.62rem;
+}
+
+.home-stage .course-feature {
+    position: relative;
+    display: grid;
+    grid-area: feature;
+    align-self: start;
+    height: clamp(31rem, 48vw, 38rem);
+    min-height: 0;
+    grid-template-columns: minmax(18rem, 0.78fr) minmax(20rem, 1fr);
+    overflow: hidden;
+    color: var(--neo-ink) !important;
+    border: 1px solid var(--neo-line);
+    background:
+        linear-gradient(90deg, rgba(8, 10, 18, 0.98), rgba(8, 10, 18, 0.54)),
+        rgba(8, 10, 18, 0.92);
+    box-shadow: var(--neo-shadow);
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 2.2rem) 0, 100% 2.2rem, 100% 100%, 0 100%);
+}
+
+.home-stage .course-feature::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(90deg, rgba(71, 232, 255, 0.12), transparent 46%),
+        repeating-linear-gradient(0deg, rgba(245, 247, 255, 0.04) 0 1px, transparent 1px 3.2rem);
+    pointer-events: none;
+}
+
+.home-stage .course-feature__copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.85rem;
+    padding: clamp(1.35rem, 3vw, 2.4rem);
+}
+
+.home-stage .course-feature__copy h3 {
+    margin: 0;
+    color: var(--neo-ink);
+    font-size: clamp(2.25rem, 4.8vw, 4.8rem);
+    line-height: 0.98;
+}
+
+.home-stage .course-feature__desc,
+.home-stage .course-feature__note {
+    max-width: 28rem;
+    margin: 0;
+    color: var(--neo-muted);
+    font-size: 0.92rem;
+    line-height: 1.72;
+}
+
+.home-stage .course-feature__note {
+    padding-left: 0.85rem;
+    border-left: 3px solid var(--neo-pink);
+    color: rgba(245, 247, 255, 0.86);
+}
+
+.home-stage .course-feature__meta {
+    display: grid;
+    margin: 0;
+    padding: 0.72rem 0.85rem;
+    border-left: 3px solid var(--neo-cyan);
+    background: rgba(71, 232, 255, 0.08);
+}
+
+.home-stage .course-feature__meta div {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 0.75rem;
+}
+
+.home-stage .course-feature__meta dt {
+    color: var(--neo-yellow);
+    font-weight: 900;
+}
+
+.home-stage .course-feature__meta dd {
+    margin: 0;
+    color: var(--neo-ink);
+}
+
+.home-stage .course-feature__art {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    justify-self: stretch;
+    align-self: stretch;
+    margin: 0;
+    overflow: hidden;
+}
+
+.home-stage .course-feature__art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(8, 10, 18, 0.46), transparent 52%);
+    pointer-events: none;
+}
+
+.home-stage .course-feature__art img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    object-fit: cover;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    opacity: 0.88;
+    filter: saturate(1.06) contrast(1.04);
+    transition: opacity 120ms ease, transform 180ms ease;
+}
+
+.home-stage .course-feature:hover .course-feature__art img {
+    opacity: 0.98;
+    transform: scale(1.02);
+}
+
+.home-stage .course-checks {
+    grid-area: checks;
+    align-self: start;
+    padding: 0.72rem;
+    border: 1px solid var(--neo-line);
+    background: rgba(8, 10, 18, 0.84);
+    box-shadow: var(--neo-shadow);
+}
+
+.home-stage .course-checks h3 {
+    margin: 0 0 0.48rem;
+    color: var(--neo-ink);
+    font-family: var(--lily-font-display);
+    font-weight: 900;
+}
+
+.home-stage .course-checks .tip-row {
+    gap: 0.48rem;
+    margin: 0.5rem 0 0;
+}
+
+.home-stage .course-checks .tip-box {
+    min-height: 0;
+    gap: 0.5rem;
+    padding: 0.58rem 0.62rem;
+    font-size: 0.72rem;
+    line-height: 1.45;
+}
+
+.home-stage .course-checks .tip-icon {
+    width: 1.82rem;
+    height: 1.82rem;
+    flex: 0 0 1.82rem;
+    font-size: 0.72rem;
+}
+
 @media screen and (max-width: 56em) {
     .home-stage + .md-footer,
     .md-tabs {
@@ -2599,6 +2841,33 @@ a {
         grid-template-columns: 1fr;
     }
 
+    .home-stage .course-showcase {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "roster"
+            "feature"
+            "checks";
+    }
+
+    .home-stage .course-roster {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-stage .course-feature {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: auto;
+    }
+
+    .home-stage .course-feature__art {
+        min-height: 22rem;
+    }
+
+    .home-stage .course-feature__art img {
+        height: 22rem;
+        min-height: 22rem;
+    }
+
     .home-stage .home-hero__visual {
         display: none;
     }
@@ -2661,7 +2930,8 @@ a {
 
     .home-stage .hero-card:hover,
     .home-stage .flow-step:hover,
-    .home-stage .home-action:hover {
+    .home-stage .home-action:hover,
+    .home-stage .course-feature:hover .course-feature__art img {
         transform: none;
     }
 }
@@ -2673,7 +2943,8 @@ a {
 
     .home-stage .hero-stats,
     .home-stage .home-news,
-    .home-stage .flow-steps {
+    .home-stage .flow-steps,
+    .home-stage .course-roster {
         grid-template-columns: 1fr;
     }
 }
@@ -3601,11 +3872,30 @@ a {
 }
 
 .topic-rail img {
+    display: block;
     width: 3rem;
     height: 3rem;
+    margin: 0;
     object-fit: cover;
+    padding: 0.11rem;
     border: 2px solid rgba(71, 232, 255, 0.72);
     border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.24), transparent 58%),
+        rgba(8, 10, 18, 0.94);
+    box-shadow:
+        inset 0 0 0 2px rgba(8, 10, 18, 0.88),
+        0 0 18px rgba(71, 232, 255, 0.16);
+    transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.topic-rail a:hover img,
+.topic-rail a.is-active img {
+    border-color: rgba(71, 232, 255, 0.96);
+    box-shadow:
+        inset 0 0 0 2px rgba(8, 10, 18, 0.88),
+        0 0 24px rgba(71, 232, 255, 0.34);
+    transform: scale(1.06);
 }
 
 .topic-rail a:not(:has(img))::before {
@@ -3682,8 +3972,201 @@ a {
     mix-blend-mode: screen;
 }
 
-.hub-stage--portfolio .hub-card {
-    cursor: default;
+.hub-stage--portfolio {
+    background:
+        linear-gradient(90deg, rgba(8, 10, 18, 0.98), rgba(8, 10, 18, 0.72) 45%, rgba(8, 10, 18, 0.92)),
+        linear-gradient(135deg, rgba(71, 232, 255, 0.1), transparent 34%, rgba(255, 79, 154, 0.12)),
+        url("../img/莉莉的白色.png") center / cover fixed;
+}
+
+.portfolio-showcase {
+    display: grid;
+    max-width: 88rem;
+    min-height: 35rem;
+    grid-template-columns: minmax(12rem, 0.32fr) minmax(30rem, 1fr);
+    gap: clamp(0.8rem, 2vw, 1.6rem);
+}
+
+.portfolio-roster {
+    display: grid;
+    align-content: center;
+    gap: 0.7rem;
+}
+
+.portfolio-roster a {
+    display: grid;
+    min-height: 4.8rem;
+    grid-template-columns: 3.4rem 1fr;
+    align-items: center;
+    gap: 0.76rem;
+    padding: 0.55rem 0.72rem;
+    color: var(--neo-ink) !important;
+    border: 1px solid rgba(245, 247, 255, 0.12);
+    background: rgba(8, 10, 18, 0.86);
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 0.9rem) 0, 100% 0.9rem, 100% 100%, 0.9rem 100%, 0 calc(100% - 0.9rem));
+}
+
+.portfolio-roster a:hover,
+.portfolio-roster a.is-active {
+    border-color: rgba(71, 232, 255, 0.62);
+    background: rgba(71, 232, 255, 0.13);
+}
+
+.portfolio-roster img {
+    display: block;
+    width: 3.4rem;
+    height: 3.4rem;
+    margin: 0;
+    padding: 0.11rem;
+    object-fit: cover;
+    border: 2px solid rgba(71, 232, 255, 0.72);
+    border-radius: 50%;
+    background: rgba(8, 10, 18, 0.94);
+    box-shadow: inset 0 0 0 2px rgba(8, 10, 18, 0.9);
+}
+
+.portfolio-roster strong,
+.portfolio-roster small {
+    display: block;
+}
+
+.portfolio-roster strong {
+    color: var(--neo-ink);
+    font-size: 0.92rem;
+    line-height: 1.2;
+}
+
+.portfolio-roster small {
+    margin-top: 0.2rem;
+    color: var(--neo-muted);
+    font-size: 0.68rem;
+}
+
+.portfolio-card {
+    position: relative;
+    display: grid;
+    height: clamp(35rem, 50vw, 42rem);
+    min-height: 0;
+    grid-template-columns: minmax(18rem, 0.76fr) minmax(22rem, 1fr);
+    overflow: hidden;
+    color: var(--neo-ink) !important;
+    border: 1px solid var(--neo-line);
+    background:
+        linear-gradient(90deg, rgba(8, 10, 18, 0.98), rgba(8, 10, 18, 0.58)),
+        rgba(8, 10, 18, 0.92);
+    box-shadow: var(--neo-shadow);
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 2.4rem) 0, 100% 2.4rem, 100% 100%, 0 100%);
+}
+
+.portfolio-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(90deg, rgba(71, 232, 255, 0.12), transparent 46%),
+        repeating-linear-gradient(0deg, rgba(245, 247, 255, 0.04) 0 1px, transparent 1px 3.4rem);
+    pointer-events: none;
+}
+
+.portfolio-card__copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.85rem;
+    padding: clamp(1.35rem, 3vw, 2.5rem);
+}
+
+.portfolio-card__copy h3 {
+    margin: 0;
+    color: var(--neo-ink);
+    font-size: clamp(1.9rem, 3.2vw, 3rem);
+    line-height: 1.08;
+    word-break: keep-all;
+}
+
+.portfolio-meta {
+    display: grid;
+    margin: 0;
+    padding: 0.72rem 0.85rem;
+    border-left: 3px solid var(--neo-cyan);
+    background: rgba(71, 232, 255, 0.08);
+}
+
+.portfolio-meta div {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 0.75rem;
+}
+
+.portfolio-meta dt {
+    color: var(--neo-yellow);
+    font-weight: 900;
+}
+
+.portfolio-meta dd {
+    margin: 0;
+    color: var(--neo-ink);
+}
+
+.portfolio-field h4 {
+    margin: 0 0 0.32rem;
+    color: var(--neo-cyan);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+}
+
+.portfolio-field p {
+    margin: 0;
+    color: var(--neo-muted);
+    font-size: 0.92rem;
+    line-height: 1.72;
+}
+
+.portfolio-art {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    justify-self: stretch;
+    align-self: stretch;
+    margin: 0;
+    overflow: hidden;
+}
+
+.portfolio-art img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    object-fit: cover;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    opacity: 0.9;
+    filter: saturate(1.04) contrast(1.04);
+    transition: opacity 120ms ease, transform 180ms ease;
+}
+
+.portfolio-card:hover .portfolio-art img {
+    opacity: 1;
+    transform: scale(1.02);
+}
+
+.portfolio-art figcaption {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    padding: 0.4rem 0.7rem;
+    color: #071018;
+    background: var(--neo-cyan);
+    font-size: 0.72rem;
+    font-weight: 900;
 }
 
 @media screen and (max-width: 56em) {
@@ -3700,7 +4183,9 @@ a {
     .process-showcase,
     .process-focus,
     .topic-showcase,
-    .topic-feature {
+    .topic-feature,
+    .portfolio-showcase,
+    .portfolio-card {
         grid-template-columns: 1fr;
     }
 
@@ -3719,8 +4204,19 @@ a {
     .process-focus,
     .process-focus > img,
     .topic-feature,
-    .topic-feature > img {
+    .topic-feature > img,
+    .portfolio-card,
+    .portfolio-art,
+    .portfolio-art img {
         min-height: 22rem;
+    }
+
+    .portfolio-card {
+        height: auto;
+    }
+
+    .portfolio-art img {
+        height: 22rem;
     }
 
     .process-focus {
@@ -3745,7 +4241,15 @@ a {
         padding-bottom: 0.25rem;
     }
 
-    .topic-rail a {
+    .portfolio-roster {
+        grid-template-columns: repeat(3, minmax(10rem, 1fr));
+        align-content: stretch;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+    }
+
+    .topic-rail a,
+    .portfolio-roster a {
         min-width: 7rem;
         grid-template-columns: 1fr;
         justify-items: center;
@@ -3793,7 +4297,8 @@ a {
     .hub-map__nav,
     .process-switch,
     .process-rail,
-    .topic-rail {
+    .topic-rail,
+    .portfolio-roster {
         grid-template-columns: 1fr;
     }
 
