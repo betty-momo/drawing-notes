@@ -89,11 +89,13 @@
 
     if (hasPlayerSource(track)) {
       const src = playerAssetPath(track.src);
-      playerAudio.src = src;
-      try {
-        playerAudio.load();
-      } catch {
-        updatePlayerUi();
+      if (!playerAudio.getAttribute("src")?.endsWith(src)) {
+        playerAudio.src = src;
+        try {
+          playerAudio.load();
+        } catch {
+          updatePlayerUi();
+        }
       }
       if (autoplay) {
         playerAudio.play().catch(() => updatePlayerUi());
@@ -155,18 +157,10 @@
         updatePlayerUi();
         return;
       }
-      try {
-        if (playerAudio.paused) {
-          const src = playerAssetPath(track.src);
-          if (!playerAudio.getAttribute("src") || !playerAudio.getAttribute("src").endsWith(track.src)) {
-            playerAudio.src = src;
-          }
-          await playerAudio.play();
-        } else {
-          playerAudio.pause();
-        }
-      } catch (err) {
-        console.warn("Drawing notes audio play failed", err);
+      if (playerAudio.paused) {
+        await playerAudio.play().catch(() => updatePlayerUi());
+      } else {
+        playerAudio.pause();
       }
       updatePlayerUi();
     };
@@ -301,7 +295,6 @@
     const image = document.createElement("img");
     image.src = src;
     image.alt = alt;
-    image.decoding = "async";
     return image;
   };
 
@@ -345,11 +338,7 @@
         link.classList.toggle("is-active", index === 0);
         link.style.setProperty("--portfolio-accent", item.accent || "#47e8ff");
         applyPortfolioDataset(link, item);
-        const img = makeImage(item.img || "", item.title || "");
-        img.width = 80;
-        img.height = 80;
-        img.loading = "lazy";
-        link.append(img);
+        link.append(makeImage(item.img || "", item.title || ""));
 
         const number = document.createElement("span");
         number.textContent = String(index + 1).padStart(2, "0");
