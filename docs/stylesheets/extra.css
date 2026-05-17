@@ -1558,13 +1558,55 @@ a {
 }
 
 @supports selector(.md-content__inner:has(.home-stage)) {
+    body:has(.home-stage) {
+        background: var(--neo-bg);
+    }
+
+    body:has(.home-stage) .md-container,
+    body:has(.home-stage) .md-main {
+        background: var(--neo-bg);
+    }
+
+    body:has(.home-stage) .md-main__inner {
+        display: block;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    body:has(.home-stage) .md-content {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    body:has(.home-stage) .md-content__inner {
+        width: 100%;
+        max-width: none;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    body:has(.home-stage) .home-stage {
+        width: 100%;
+        margin: 0;
+    }
+
+    body:has(.home-stage) .md-sidebar,
+    body:has(.home-stage) .md-footer,
+    body:has(.home-stage) .md-content__button {
+        display: none;
+    }
+
     .md-main__inner:has(.home-stage) {
         margin-top: 0;
     }
 
     .md-content__inner:has(.home-stage) {
+        width: 100%;
         max-width: none;
-        padding: 0 0 3.5rem;
+        margin: 0;
+        padding: 0;
     }
 
     .md-content__inner:has(.home-stage)::before {
