@@ -45,6 +45,9 @@ theme:
 extra_css:
   - stylesheets/extra.css
 
+extra_javascript:
+  - javascripts/extra.js
+
 extra:
   generator: false
   social:
@@ -54,10 +57,12 @@ extra:
 nav:
   - 首页: index.md
   - 基础知识:
+    - 基础知识: 基础知识.md
     - 人体知识: 人体知识.md
     - 场景知识: 场景知识.md
     - 色彩知识: 色彩知识.md
   - 绘画流程:
+    - 绘画流程: 绘画流程.md
     - 起草: 流程/起草.md
     - 勾线: 流程/勾线.md
     - 固有色: 流程/固有色.md
@@ -70,6 +75,7 @@ nav:
     - 塑造: 流程/塑造.md
     - 光源衰减: 流程/光源衰减.md
   - 专题深入:
+    - 专题深入: 专题深入.md
     - 眼睛上色: 专题/眼睛上色.md
     - 头发塑造: 专题/头发塑造.md
     - 皮肤塑造: 专题/皮肤塑造.md

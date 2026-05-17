@@ -39,9 +39,9 @@ hide:
     </section>
 
     <section class="home-news">
-        <a href="人体知识.html"><span>FOUNDATION</span>人体结构、体块和比例</a>
-        <a href="场景知识.html"><span>SPACE</span>透视、场景和构图</a>
-        <a href="色彩知识.html"><span>COLOR</span>色相、明暗和图层</a>
+        <a href="基础知识.html"><span>FOUNDATION</span>基础知识汇总入口</a>
+        <a href="绘画流程.html"><span>PROCESS</span>绘画流程节点入口</a>
+        <a href="专题深入.html"><span>DETAIL</span>专题训练汇总入口</a>
     </section>
 
     <section class="route-panel">
