@@ -23,24 +23,18 @@
       cover: "",
       note: "已接入本地音频，后续可以继续补封面和曲目信息。",
     },
-    {
-      title: "曲目 03",
-      artist: "待上传音乐",
-      src: "",
-      cover: "",
-      note: "暂时没有上传文件时，播放器会保持待上传状态。",
-    },
   ];
 
   let playerIndex = 0;
   let playerAudio = null;
   let playerUi = null;
+  let playerError = "";
 
   const currentPlayerTrack = () => playerTracks[playerIndex] || playerTracks[0];
 
   const playerAssetPath = (src) => {
     if (!src || /^(?:[a-z]+:|\/|#)/i.test(src)) return src || "";
-    return `${pageBase()}${src.replace(/^\.?\//, "")}`;
+    return encodeURI(`${pageBase()}${src.replace(/^\.?\//, "")}`);
   };
 
   const hasPlayerSource = (track) => Boolean(track?.src);
@@ -66,9 +60,13 @@
     playerUi.panel.classList.toggle("is-empty", !hasSource);
     playerUi.title.textContent = track?.title || "未命名曲目";
     playerUi.artist.textContent = track?.artist || "待上传音乐";
-    playerUi.note.textContent = hasSource ? (track.note || "本地音频已就绪。") : (track.note || "还没有上传音频。");
+    playerUi.note.textContent = playerError
+      ? `音频加载失败：${playerError}`
+      : hasSource
+        ? (track.note || "本地音频已就绪。")
+        : (track.note || "还没有上传音频。");
     playerUi.play.textContent = playing ? "暂停" : hasSource ? "播放" : "待上传";
-    playerUi.play.disabled = !hasSource;
+    playerUi.play.disabled = !hasSource || Boolean(playerError);
     playerUi.prev.disabled = playerTracks.length < 2;
     playerUi.next.disabled = playerTracks.length < 2;
     playerUi.progress.disabled = !hasSource;
@@ -86,6 +84,7 @@
     playerIndex = (index + playerTracks.length) % playerTracks.length;
     const track = currentPlayerTrack();
     playerAudio.pause();
+    playerError = "";
 
     if (hasPlayerSource(track)) {
       const src = playerAssetPath(track.src);
@@ -158,8 +157,14 @@
         return;
       }
       if (playerAudio.paused) {
-        await playerAudio.play().catch(() => updatePlayerUi());
-        setPanelOpen(true);
+        try {
+          await playerAudio.play();
+          playerError = "";
+          setPanelOpen(true);
+        } catch (err) {
+          playerError = err?.message || "无法播放（可能是自动播放被拦截或格式不支持）";
+          console.error("[player] play failed", err, playerAudio.src);
+        }
       } else {
         playerAudio.pause();
       }
@@ -219,11 +224,26 @@
       e.stopPropagation();
       if (playerAudio) playerAudio.volume = Number(e.target.value);
     });
-    playerAudio.addEventListener("loadedmetadata", updatePlayerUi);
+    playerAudio.addEventListener("loadedmetadata", () => {
+      playerError = "";
+      updatePlayerUi();
+    });
     playerAudio.addEventListener("timeupdate", updatePlayerUi);
     playerAudio.addEventListener("play", updatePlayerUi);
     playerAudio.addEventListener("pause", updatePlayerUi);
     playerAudio.addEventListener("ended", () => loadPlayerTrack(playerIndex + 1, true));
+    playerAudio.addEventListener("error", () => {
+      const code = playerAudio.error?.code;
+      const codeMap = {
+        1: "加载被中止",
+        2: "网络错误（检查文件路径）",
+        3: "解码失败（浏览器不支持该格式）",
+        4: "格式或路径不可用（多半是 404 或编码不被支持）",
+      };
+      playerError = codeMap[code] || "未知错误";
+      console.error("[player] audio error", code, playerAudio.error, playerAudio.src);
+      updatePlayerUi();
+    });
     document.addEventListener("click", (event) => {
       if (!actions.contains(event.target) && playerAudio?.paused) setPanelOpen(false);
     });
@@ -233,13 +253,21 @@
 
     const search = header.querySelector(".md-search");
     if (search) {
+      const toggle = document.getElementById("__search");
       const keepSearchInline = () => {
-        const toggle = document.getElementById("__search");
         if (toggle) toggle.checked = false;
         search.removeAttribute("data-md-state");
       };
-      search.addEventListener("focusin", () => window.requestAnimationFrame(keepSearchInline));
-      search.addEventListener("input", () => window.requestAnimationFrame(keepSearchInline), true);
+      if (toggle && !toggle.dataset.searchLocked) {
+        toggle.dataset.searchLocked = "true";
+        toggle.addEventListener("change", () => {
+          if (toggle.checked) keepSearchInline();
+        });
+        toggle.addEventListener("click", keepSearchInline, true);
+      }
+      search.addEventListener("focusin", keepSearchInline);
+      search.addEventListener("input", keepSearchInline, true);
+      keepSearchInline();
       search.insertAdjacentElement("afterend", actions);
     } else {
       header.append(actions);
@@ -265,13 +293,27 @@
   const readJsonData = (root, selector) => {
     const source = root.querySelector(selector);
     if (!source) return [];
+    const raw = (source.tagName === "TEMPLATE"
+      ? (source.content?.textContent ?? source.innerHTML ?? "")
+      : (source.textContent ?? "")).trim();
+    if (!raw) return [];
     try {
-      const data = JSON.parse(source.textContent || "[]");
+      const data = JSON.parse(raw);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.warn("Drawing notes data parse failed", error);
       return [];
     }
+  };
+
+  const dataCache = new Map();
+  const getCachedJsonData = (root, selector, cacheKey) => {
+    const fresh = readJsonData(root, selector);
+    if (fresh.length) {
+      dataCache.set(cacheKey, fresh);
+      return fresh;
+    }
+    return dataCache.get(cacheKey) || [];
   };
 
   const applyCourseDataset = (link, item) => {
@@ -305,10 +347,10 @@
 
   const renderCourseData = () => {
     document.querySelectorAll(".course-showcase").forEach((root) => {
-      if (root.dataset.dataReady === "true") return;
-      const items = readJsonData(root, ".course-data");
+      const items = getCachedJsonData(root, ".course-data", "course");
       const roster = root.querySelector(".course-roster");
       if (!items.length || !roster) return;
+      if (roster.children.length === items.length && roster.dataset.dataSig === String(items.length)) return;
 
       roster.replaceChildren(...items.map((item, index) => {
         const link = document.createElement("a");
@@ -326,16 +368,16 @@
         link.append(label);
         return link;
       }));
-      root.dataset.dataReady = "true";
+      roster.dataset.dataSig = String(items.length);
     });
   };
 
   const renderPortfolioData = () => {
     document.querySelectorAll(".portfolio-showcase").forEach((root) => {
-      if (root.dataset.dataReady === "true") return;
-      const items = readJsonData(root, ".portfolio-data");
+      const items = getCachedJsonData(root, ".portfolio-data", "portfolio");
       const roster = root.querySelector(".portfolio-roster");
       if (!items.length || !roster) return;
+      if (roster.children.length === items.length && roster.dataset.dataSig === String(items.length)) return;
 
       roster.replaceChildren(...items.map((item, index) => {
         const link = document.createElement("a");
@@ -350,7 +392,7 @@
         link.append(number);
         return link;
       }));
-      root.dataset.dataReady = "true";
+      roster.dataset.dataSig = String(items.length);
     });
   };
 
