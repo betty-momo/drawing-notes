@@ -255,11 +255,21 @@
 
     const search = header.querySelector(".md-search");
     if (search) {
+      const toggle = document.getElementById("__search");
       const keepSearchInline = () => {
+        if (toggle) toggle.checked = false;
         search.removeAttribute("data-md-state");
       };
+      if (toggle && !toggle.dataset.searchLocked) {
+        toggle.dataset.searchLocked = "true";
+        toggle.addEventListener("change", () => {
+          if (toggle.checked) keepSearchInline();
+        });
+        toggle.addEventListener("click", keepSearchInline, true);
+      }
       search.addEventListener("focusin", keepSearchInline);
       search.addEventListener("input", keepSearchInline, true);
+      keepSearchInline();
       search.insertAdjacentElement("afterend", actions);
     } else {
       header.append(actions);
