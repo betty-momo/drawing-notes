@@ -32,11 +32,9 @@ hide:
             </div>
         </div>
         <div class="home-hero__visual" aria-hidden="true">
-            <div class="hero-showcase">
-                <img class="hero-showcase__img" src="img/眼睛.png" alt="">
-                <div class="hero-showcase__frame"></div>
-                <span class="hero-showcase__tag">ILLUSTRATION</span>
-            </div>
+            <img class="hero-shot hero-shot--main" src="img/眼睛.png" alt="">
+            <img class="hero-shot hero-shot--side" src="img/色相.png" alt="">
+            <img class="hero-shot hero-shot--small" src="img/结构概括总图.png" alt="">
         </div>
     </section>
 
