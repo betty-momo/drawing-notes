@@ -8,114 +8,103 @@
     }
   };
 
-  const musicTracks = [
-    { name: "练习脉冲", notes: [261.63, 329.63, 392, 523.25, 392, 329.63], wave: "triangle", interval: 780 },
-    { name: "夜色回路", notes: [293.66, 349.23, 440, 587.33, 523.25, 440], wave: "sine", interval: 720 },
-    { name: "高光节拍", notes: [220, 277.18, 329.63, 415.3, 369.99, 277.18], wave: "triangle", interval: 840 },
+  const playerTracks = [
+    {
+      title: "曲目 01",
+      artist: "待上传音乐",
+      src: "",
+      cover: "",
+      note: "把音频放到 docs/audio/，封面放到 docs/img/，再在 playerTracks 里填 src 和 cover。",
+    },
+    {
+      title: "曲目 02",
+      artist: "待上传音乐",
+      src: "",
+      cover: "",
+      note: "这里可以继续放第二首歌的路径、封面和说明。",
+    },
+    {
+      title: "曲目 03",
+      artist: "待上传音乐",
+      src: "",
+      cover: "",
+      note: "暂时没有上传文件时，播放器会保持待上传状态。",
+    },
   ];
 
-  const musicSettings = {
-    volume: 0.055,
-    tempo: 1,
-    tone: 0,
+  let playerIndex = 0;
+  let playerAudio = null;
+  let playerUi = null;
+
+  const currentPlayerTrack = () => playerTracks[playerIndex] || playerTracks[0];
+
+  const playerAssetPath = (src) => {
+    if (!src || /^(?:[a-z]+:|\/|#)/i.test(src)) return src || "";
+    return `${pageBase()}${src.replace(/^\.?\//, "")}`;
   };
 
-  let music = null;
-  let musicTrackIndex = 0;
-  let musicUi = null;
+  const hasPlayerSource = (track) => Boolean(track?.src);
 
-  const musicInterval = (track) => Math.max(220, track.interval / musicSettings.tempo);
-
-  const setMusicUi = () => {
-    if (!musicUi) return;
-    const track = music?.track || musicTracks[(musicTrackIndex + musicTracks.length - 1) % musicTracks.length] || musicTracks[0];
-    const active = Boolean(music);
-    musicUi.audio.classList.toggle("is-active", active);
-    musicUi.audio.setAttribute("aria-pressed", String(active));
-    musicUi.audio.title = active ? `音乐：${track.name}` : "音乐";
-    musicUi.audio.setAttribute("aria-label", active ? `音乐：${track.name}` : "音乐");
-    musicUi.panel.classList.toggle("is-playing", active);
-    musicUi.track.textContent = track.name;
-    musicUi.playText.textContent = active ? "暂停" : "播放";
+  const formatPlayerTime = (value) => {
+    if (!Number.isFinite(value) || value <= 0) return "0:00";
+    const minutes = Math.floor(value / 60);
+    const seconds = Math.floor(value % 60).toString().padStart(2, "0");
+    return `${minutes}:${seconds}`;
   };
 
-  const syncMusicSettings = () => {
-    if (!music) return;
-    music.master.gain.cancelScheduledValues(music.context.currentTime);
-    music.master.gain.setTargetAtTime(musicSettings.volume, music.context.currentTime, 0.06);
-    window.clearInterval(music.timer);
-    music.timer = window.setInterval(music.playNote, musicInterval(music.track));
+  const updatePlayerUi = () => {
+    if (!playerUi || !playerAudio) return;
+    const track = currentPlayerTrack();
+    const hasSource = hasPlayerSource(track);
+    const playing = hasSource && !playerAudio.paused;
+    const duration = Number.isFinite(playerAudio.duration) ? playerAudio.duration : 0;
+
+    playerUi.audioButton.classList.toggle("is-active", playing);
+    playerUi.audioButton.setAttribute("aria-pressed", String(playing));
+    playerUi.audioButton.setAttribute("aria-expanded", String(playerUi.panel.classList.contains("is-open")));
+    playerUi.panel.classList.toggle("is-playing", playing);
+    playerUi.panel.classList.toggle("is-empty", !hasSource);
+    playerUi.title.textContent = track?.title || "未命名曲目";
+    playerUi.artist.textContent = track?.artist || "待上传音乐";
+    playerUi.note.textContent = hasSource ? (track.note || "本地音频已就绪。") : (track.note || "还没有上传音频。");
+    playerUi.play.textContent = playing ? "暂停" : hasSource ? "播放" : "待上传";
+    playerUi.play.disabled = !hasSource;
+    playerUi.prev.disabled = playerTracks.length < 2;
+    playerUi.next.disabled = playerTracks.length < 2;
+    playerUi.progress.disabled = !hasSource;
+    playerUi.progress.max = duration || 100;
+    playerUi.progress.value = hasSource ? playerAudio.currentTime || 0 : 0;
+    playerUi.current.textContent = formatPlayerTime(playerAudio.currentTime);
+    playerUi.duration.textContent = formatPlayerTime(duration);
+    playerUi.cover.classList.toggle("has-cover", Boolean(track?.cover));
+    playerUi.cover.style.backgroundImage = track?.cover ? `url("${playerAssetPath(track.cover)}")` : "";
+    playerUi.coverText.textContent = hasSource ? String(playerIndex + 1).padStart(2, "0") : "NO FILE";
   };
 
-  const stopMusic = () => {
-    if (!music) return;
-    const current = music;
-    music = null;
-    window.clearInterval(current.timer);
-    current.master.gain.cancelScheduledValues(current.context.currentTime);
-    current.master.gain.setTargetAtTime(0, current.context.currentTime, 0.05);
-    window.setTimeout(() => {
-      current.context.close();
-    }, 180);
-    setMusicUi();
-  };
+  const loadPlayerTrack = (index, autoplay = false) => {
+    if (!playerAudio) return;
+    playerIndex = (index + playerTracks.length) % playerTracks.length;
+    const track = currentPlayerTrack();
+    playerAudio.pause();
 
-  const startMusic = async () => {
-    if (music) return music.track;
-
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return false;
-
-    const context = new AudioContext();
-    const master = context.createGain();
-    const delay = context.createDelay();
-    const feedback = context.createGain();
-    const track = musicTracks[musicTrackIndex % musicTracks.length];
-    musicTrackIndex += 1;
-    const notes = track.notes;
-    let step = 0;
-
-    master.gain.value = 0;
-    delay.delayTime.value = 0.22;
-    feedback.gain.value = 0.18;
-    delay.connect(feedback);
-    feedback.connect(delay);
-    delay.connect(master);
-    master.connect(context.destination);
-    master.gain.setTargetAtTime(musicSettings.volume, context.currentTime, 0.08);
-
-    const playNote = () => {
-      const now = context.currentTime;
-      const osc = context.createOscillator();
-      const gain = context.createGain();
-      osc.type = track.wave;
-      osc.frequency.value = notes[step % notes.length] * Math.pow(2, musicSettings.tone / 1200);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.16, now + 0.012);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.62);
-      osc.connect(gain);
-      gain.connect(master);
-      gain.connect(delay);
-      osc.start(now);
-      osc.stop(now + 0.68);
-      step += 1;
-    };
-
-    if (context.state === "suspended") {
-      await context.resume();
+    if (hasPlayerSource(track)) {
+      const src = playerAssetPath(track.src);
+      if (!playerAudio.getAttribute("src")?.endsWith(src)) {
+        playerAudio.src = src;
+        try {
+          playerAudio.load();
+        } catch {
+          updatePlayerUi();
+        }
+      }
+      if (autoplay) {
+        playerAudio.play().catch(() => updatePlayerUi());
+      }
+    } else {
+      playerAudio.removeAttribute("src");
     }
 
-    playNote();
-    music = {
-      context,
-      master,
-      track,
-      playNote,
-      timer: window.setInterval(playNote, musicInterval(track)),
-    };
-
-    setMusicUi();
-    return track;
+    updatePlayerUi();
   };
 
   const mountHeaderActions = () => {
@@ -139,31 +128,41 @@
     const panel = document.createElement("div");
     panel.className = "neo-music-panel";
     panel.innerHTML = `
-      <div class="neo-music-panel__head">
-        <button class="neo-music-disc" type="button" data-music-play aria-label="播放或暂停音乐"></button>
-        <div class="neo-music-title">
-          <span>LOOP PLAYER</span>
-          <strong data-music-track>${musicTracks[0].name}</strong>
+      <div class="neo-player-head">
+        <button class="neo-player-cover" type="button" data-player-cover data-player-play aria-label="播放或暂停音乐">
+          <span data-player-cover-text>NO FILE</span>
+        </button>
+        <div class="neo-player-title">
+          <span>LOCAL PLAYER</span>
+          <strong data-player-title>曲目 01</strong>
+          <small data-player-artist>待上传音乐</small>
         </div>
       </div>
-      <div class="neo-music-controls">
-        <label>音量<input data-music-volume type="range" min="0" max="0.12" step="0.005" value="${musicSettings.volume}"></label>
-        <label>速度<input data-music-tempo type="range" min="0.72" max="1.38" step="0.02" value="${musicSettings.tempo}"></label>
-        <label>音色<input data-music-tone type="range" min="-80" max="80" step="10" value="${musicSettings.tone}"></label>
+      <div class="neo-player-bar">
+        <input data-player-progress type="range" min="0" max="100" step="0.1" value="0" disabled>
+        <div class="neo-player-time"><span data-player-current>0:00</span><span data-player-duration>0:00</span></div>
       </div>
-      <div class="neo-music-actions">
-        <button type="button" data-music-play-text>播放</button>
-        <button type="button" data-music-next>切换曲型</button>
+      <div class="neo-player-buttons">
+        <button type="button" data-player-prev>上一首</button>
+        <button type="button" data-player-play-text>待上传</button>
+        <button type="button" data-player-next>下一首</button>
       </div>
+      <label class="neo-player-volume">音量<input data-player-volume type="range" min="0" max="1" step="0.01" value="0.72"></label>
+      <p class="neo-player-note" data-player-note></p>
     `;
 
     const togglePlayback = async () => {
-      if (music) {
-        stopMusic();
-      } else {
-        await startMusic();
+      const track = currentPlayerTrack();
+      if (!playerAudio || !hasPlayerSource(track)) {
+        updatePlayerUi();
+        return;
       }
-      setMusicUi();
+      if (playerAudio.paused) {
+        await playerAudio.play().catch(() => updatePlayerUi());
+      } else {
+        playerAudio.pause();
+      }
+      updatePlayerUi();
     };
 
     const setPanelOpen = (open) => {
@@ -172,44 +171,60 @@
       panel.style.transform = open ? "translateY(0)" : "";
     };
 
-    musicUi = {
-      audio,
+    playerAudio = new Audio();
+    playerAudio.preload = "metadata";
+    playerAudio.volume = 0.72;
+
+    playerUi = {
+      audioButton: audio,
       panel,
-      track: panel.querySelector("[data-music-track]"),
-      playText: panel.querySelector("[data-music-play-text]"),
+      cover: panel.querySelector("[data-player-cover]"),
+      coverText: panel.querySelector("[data-player-cover-text]"),
+      title: panel.querySelector("[data-player-title]"),
+      artist: panel.querySelector("[data-player-artist]"),
+      note: panel.querySelector("[data-player-note]"),
+      progress: panel.querySelector("[data-player-progress]"),
+      current: panel.querySelector("[data-player-current]"),
+      duration: panel.querySelector("[data-player-duration]"),
+      play: panel.querySelector("[data-player-play-text]"),
+      prev: panel.querySelector("[data-player-prev]"),
+      next: panel.querySelector("[data-player-next]"),
+      volume: panel.querySelector("[data-player-volume]"),
     };
 
-    audio.addEventListener("click", async (event) => {
+    audio.addEventListener("click", (event) => {
       event.stopPropagation();
       setPanelOpen(!panel.classList.contains("is-open"));
-      await togglePlayback();
+      updatePlayerUi();
     });
 
-    panel.querySelector("[data-music-play]").addEventListener("click", togglePlayback);
-    panel.querySelector("[data-music-play-text]").addEventListener("click", togglePlayback);
-    panel.querySelector("[data-music-next]").addEventListener("click", async () => {
-      const wasPlaying = Boolean(music);
-      stopMusic();
-      if (wasPlaying) await startMusic();
-      setMusicUi();
+    panel.querySelector("[data-player-play]").addEventListener("click", togglePlayback);
+    panel.querySelector("[data-player-play-text]").addEventListener("click", togglePlayback);
+    panel.querySelector("[data-player-prev]").addEventListener("click", () => {
+      loadPlayerTrack(playerIndex - 1, playerAudio && !playerAudio.paused);
     });
-    panel.querySelector("[data-music-volume]").addEventListener("input", (event) => {
-      musicSettings.volume = Number(event.target.value);
-      syncMusicSettings();
+    panel.querySelector("[data-player-next]").addEventListener("click", () => {
+      loadPlayerTrack(playerIndex + 1, playerAudio && !playerAudio.paused);
     });
-    panel.querySelector("[data-music-tempo]").addEventListener("input", (event) => {
-      musicSettings.tempo = Number(event.target.value);
-      syncMusicSettings();
+    panel.querySelector("[data-player-progress]").addEventListener("input", (event) => {
+      if (playerAudio && Number.isFinite(playerAudio.duration)) {
+        playerAudio.currentTime = Number(event.target.value);
+      }
     });
-    panel.querySelector("[data-music-tone]").addEventListener("input", (event) => {
-      musicSettings.tone = Number(event.target.value);
+    panel.querySelector("[data-player-volume]").addEventListener("input", (event) => {
+      if (playerAudio) playerAudio.volume = Number(event.target.value);
     });
+    playerAudio.addEventListener("loadedmetadata", updatePlayerUi);
+    playerAudio.addEventListener("timeupdate", updatePlayerUi);
+    playerAudio.addEventListener("play", updatePlayerUi);
+    playerAudio.addEventListener("pause", updatePlayerUi);
+    playerAudio.addEventListener("ended", () => loadPlayerTrack(playerIndex + 1, true));
     document.addEventListener("click", (event) => {
       if (!actions.contains(event.target)) setPanelOpen(false);
     });
 
     actions.append(audio, portfolio, panel);
-    setMusicUi();
+    loadPlayerTrack(0);
 
     const search = header.querySelector(".md-search");
     if (search) {
@@ -339,9 +354,11 @@
     renderPortfolioData();
   };
 
-  const bindPreviewSwitcher = (root, linkSelector, targetSelector, update) => {
+  const bindPreviewSwitcher = (root, linkSelector, targetSelector, update, options = {}) => {
     if (!root || root.dataset.previewReady === "true") return;
 
+    const activateOnHover = options.activateOnHover !== false;
+    const activateOnFocus = options.activateOnFocus !== false;
     const links = Array.from(root.querySelectorAll(linkSelector));
     const target = root.querySelector(targetSelector);
     if (!links.length || !target) return;
@@ -358,8 +375,8 @@
     };
 
     links.forEach((link) => {
-      link.addEventListener("mouseenter", () => activate(link));
-      link.addEventListener("focus", () => activate(link));
+      if (activateOnHover) link.addEventListener("mouseenter", () => activate(link));
+      if (activateOnFocus) link.addEventListener("focus", () => activate(link));
       link.addEventListener("click", (event) => {
         if (link.getAttribute("href")?.startsWith("#")) {
           event.preventDefault();
@@ -368,9 +385,11 @@
       });
     });
 
-    root.addEventListener("pointerover", activateFromEvent);
-    root.addEventListener("mouseover", activateFromEvent);
-    root.addEventListener("focusin", activateFromEvent);
+    if (activateOnHover) {
+      root.addEventListener("pointerover", activateFromEvent);
+      root.addEventListener("mouseover", activateFromEvent);
+    }
+    if (activateOnFocus) root.addEventListener("focusin", activateFromEvent);
 
     root.dataset.previewReady = "true";
   };
@@ -430,21 +449,27 @@
         if (item.dataset.previewAccent) {
           target.style.setProperty("--portfolio-accent", item.dataset.previewAccent);
         }
-      });
+      }, { activateOnHover: false, activateOnFocus: false });
     });
   };
 
-  const mountAll = () => {
-    mountHeaderActions();
-    mountDataSections();
-    mountPreviewSwitchers();
+  const runMount = (name, mount) => {
+    try {
+      mount();
+    } catch (error) {
+      console.warn(`Drawing notes ${name} mount failed`, error);
+    }
   };
 
-  if (window.document$) {
-    window.document$.subscribe(mountAll);
-  } else if (document.readyState === "loading") {
+  const mountAll = () => {
+    runMount("header actions", mountHeaderActions);
+    runMount("data sections", mountDataSections);
+    runMount("preview switchers", mountPreviewSwitchers);
+  };
+
+  window.setTimeout(mountAll, 0);
+  if (window.document$) window.document$.subscribe(mountAll);
+  if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mountAll, { once: true });
-  } else {
-    mountAll();
   }
 })();

@@ -1811,42 +1811,62 @@ a {
     transform: translateY(0) !important;
 }
 
-.neo-music-panel__head {
+.neo-player-head {
     display: grid;
-    grid-template-columns: 3.4rem 1fr;
+    grid-template-columns: 4.2rem 1fr;
     align-items: center;
-    gap: 0.72rem;
+    gap: 0.85rem;
 }
 
-.neo-music-disc {
+.neo-player-cover {
     position: relative;
     display: grid;
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 4.05rem;
+    height: 4.05rem;
     place-items: center;
     padding: 0;
-    border: 2px solid rgba(245, 247, 255, 0.3);
+    overflow: hidden;
+    color: rgba(245, 247, 255, 0.78);
+    border: 2px solid rgba(245, 247, 255, 0.28);
     border-radius: 50%;
     background:
-        radial-gradient(circle at 50% 50%, #05070c 0 0.36rem, transparent 0.37rem),
-        repeating-conic-gradient(from 0deg, var(--neo-cyan) 0 18deg, var(--neo-pink) 18deg 30deg, rgba(245, 247, 255, 0.24) 30deg 42deg);
-    box-shadow: inset 0 0 0 0.34rem rgba(5, 7, 12, 0.78), 0 0 24px rgba(71, 232, 255, 0.2);
+        radial-gradient(circle at 50% 50%, #05070c 0 0.44rem, transparent 0.46rem),
+        repeating-conic-gradient(from 0deg, rgba(71, 232, 255, 0.85) 0 18deg, rgba(255, 69, 156, 0.82) 18deg 30deg, rgba(245, 247, 255, 0.22) 30deg 44deg);
+    background-position: center;
+    background-size: cover;
+    box-shadow: inset 0 0 0 0.42rem rgba(5, 7, 12, 0.82), 0 0 24px rgba(71, 232, 255, 0.2);
     cursor: pointer;
 }
 
-.neo-music-disc::after {
-    content: "";
-    width: 0.58rem;
-    height: 0.58rem;
-    border-radius: 50%;
-    background: rgba(245, 247, 255, 0.9);
+.neo-player-cover.has-cover {
+    border-color: rgba(71, 232, 255, 0.74);
+    box-shadow: inset 0 0 0 0.38rem rgba(5, 7, 12, 0.52), 0 0 24px rgba(71, 232, 255, 0.24);
 }
 
-.neo-music-panel.is-playing .neo-music-disc {
+.neo-player-cover::after {
+    content: "";
+    position: absolute;
+    width: 0.62rem;
+    height: 0.62rem;
+    border-radius: 50%;
+    background: rgba(245, 247, 255, 0.92);
+}
+
+.neo-player-cover span {
+    z-index: 1;
+    max-width: 2.5rem;
+    color: rgba(245, 247, 255, 0.82);
+    font-size: 0.52rem;
+    font-weight: 900;
+    line-height: 1.05;
+    text-align: center;
+}
+
+.neo-music-panel.is-playing .neo-player-cover {
     animation: neo-disc-spin 1.55s linear infinite;
 }
 
-.neo-music-title span {
+.neo-player-title span {
     display: block;
     color: var(--neo-cyan);
     font-family: var(--lily-font-ui);
@@ -1855,20 +1875,75 @@ a {
     letter-spacing: 0.1em;
 }
 
-.neo-music-title strong {
+.neo-player-title strong {
     display: block;
-    margin-top: 0.18rem;
+    margin-top: 0.2rem;
     color: var(--neo-ink);
-    font-size: 1.02rem;
+    font-size: 1.05rem;
     line-height: 1.15;
 }
 
-.neo-music-controls {
-    display: grid;
-    gap: 0.48rem;
+.neo-player-title small {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--neo-muted);
+    font-size: 0.68rem;
 }
 
-.neo-music-controls label {
+.neo-player-bar {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.neo-player-bar input,
+.neo-player-volume input {
+    width: 100%;
+    accent-color: var(--neo-cyan);
+}
+
+.neo-player-bar input:disabled {
+    opacity: 0.42;
+}
+
+.neo-player-time {
+    display: flex;
+    justify-content: space-between;
+    color: var(--neo-muted);
+    font-size: 0.62rem;
+    font-weight: 900;
+}
+
+.neo-player-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    gap: 0.45rem;
+}
+
+.neo-player-buttons button {
+    min-height: 2rem;
+    color: var(--neo-ink);
+    border: 1px solid rgba(245, 247, 255, 0.16);
+    background: rgba(245, 247, 255, 0.08);
+    font-family: var(--lily-font-ui);
+    font-size: 0.68rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.neo-player-buttons button:nth-child(2) {
+    color: #071018;
+    border: 0;
+    background: var(--neo-cyan);
+}
+
+.neo-player-buttons button:disabled {
+    color: rgba(245, 247, 255, 0.32);
+    border-color: rgba(245, 247, 255, 0.08);
+    background: rgba(245, 247, 255, 0.04);
+    cursor: not-allowed;
+}
+
+.neo-player-volume {
     display: grid;
     grid-template-columns: 2.8rem 1fr;
     align-items: center;
@@ -1878,32 +1953,15 @@ a {
     font-weight: 900;
 }
 
-.neo-music-controls input {
-    width: 100%;
-    accent-color: var(--neo-cyan);
-}
-
-.neo-music-actions {
-    display: grid;
-    grid-template-columns: 0.75fr 1fr;
-    gap: 0.45rem;
-}
-
-.neo-music-actions button {
-    min-height: 2rem;
-    color: #071018;
-    border: 0;
-    background: var(--neo-cyan);
-    font-family: var(--lily-font-ui);
-    font-size: 0.72rem;
-    font-weight: 900;
-    cursor: pointer;
-}
-
-.neo-music-actions button:last-child {
-    color: var(--neo-ink);
-    border: 1px solid rgba(245, 247, 255, 0.16);
-    background: rgba(245, 247, 255, 0.08);
+.neo-player-note {
+    min-height: 2.6rem;
+    margin: 0;
+    padding: 0.55rem 0.62rem;
+    color: var(--neo-muted);
+    border: 1px solid rgba(245, 247, 255, 0.12);
+    background: rgba(245, 247, 255, 0.05);
+    font-size: 0.68rem;
+    line-height: 1.55;
 }
 
 .neo-action--portfolio {
@@ -4223,12 +4281,16 @@ a {
     transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
 }
 
-.portfolio-roster a:hover,
 .portfolio-roster a.is-active {
     border-color: var(--portfolio-accent, var(--neo-cyan));
     background: rgba(71, 232, 255, 0.12);
     box-shadow: 0 0 0 0.25rem rgba(71, 232, 255, 0.14), 0 0 24px rgba(71, 232, 255, 0.35);
     transform: scale(1.06);
+}
+
+.portfolio-roster a:hover {
+    border-color: rgba(245, 247, 255, 0.34);
+    transform: scale(1.03);
 }
 
 .portfolio-roster img {
