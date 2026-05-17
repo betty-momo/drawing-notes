@@ -8,7 +8,14 @@
     }
   };
 
+  const musicTracks = [
+    { name: "fuwari", notes: [261.63, 329.63, 392, 523.25, 392, 329.63], wave: "triangle", interval: 780 },
+    { name: "芜菁f", notes: [293.66, 349.23, 440, 587.33, 523.25, 440], wave: "sine", interval: 720 },
+    { name: "曼奇立德", notes: [220, 277.18, 329.63, 415.3, 369.99, 277.18], wave: "triangle", interval: 840 },
+  ];
+
   let music = null;
+  let musicTrackIndex = 0;
 
   const stopMusic = () => {
     if (!music) return;
@@ -22,7 +29,7 @@
   };
 
   const startMusic = async () => {
-    if (music) return true;
+    if (music) return music.track;
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return false;
@@ -31,7 +38,9 @@
     const master = context.createGain();
     const delay = context.createDelay();
     const feedback = context.createGain();
-    const notes = [261.63, 329.63, 392, 523.25, 392, 329.63];
+    const track = musicTracks[musicTrackIndex % musicTracks.length];
+    musicTrackIndex += 1;
+    const notes = track.notes;
     let step = 0;
 
     master.gain.value = 0;
@@ -47,7 +56,7 @@
       const now = context.currentTime;
       const osc = context.createOscillator();
       const gain = context.createGain();
-      osc.type = "triangle";
+      osc.type = track.wave;
       osc.frequency.value = notes[step % notes.length];
       gain.gain.setValueAtTime(0, now);
       gain.gain.linearRampToValueAtTime(0.16, now + 0.012);
@@ -68,10 +77,11 @@
     music = {
       context,
       master,
-      timer: window.setInterval(playNote, 780),
+      track,
+      timer: window.setInterval(playNote, track.interval),
     };
 
-    return true;
+    return track;
   };
 
   const mountHeaderActions = () => {
@@ -89,10 +99,14 @@
     audio.addEventListener("click", async () => {
       const willPlay = audio.getAttribute("aria-pressed") !== "true";
       if (willPlay) {
-        const started = await startMusic();
-        if (!started) return;
+        const track = await startMusic();
+        if (!track) return;
+        audio.title = `音乐：${track.name}`;
+        audio.setAttribute("aria-label", `音乐：${track.name}`);
       } else {
         stopMusic();
+        audio.title = "音乐";
+        audio.setAttribute("aria-label", "音乐");
       }
       audio.setAttribute("aria-pressed", String(willPlay));
       audio.classList.toggle("is-active", willPlay);
@@ -107,6 +121,13 @@
 
     const search = header.querySelector(".md-search");
     if (search) {
+      const keepSearchInline = () => {
+        const toggle = document.getElementById("__search");
+        if (toggle) toggle.checked = false;
+        search.removeAttribute("data-md-state");
+      };
+      search.addEventListener("focusin", () => window.requestAnimationFrame(keepSearchInline));
+      search.addEventListener("input", () => window.requestAnimationFrame(keepSearchInline), true);
       search.insertAdjacentElement("afterend", actions);
     } else {
       header.append(actions);
@@ -210,10 +231,16 @@
       bindPreviewSwitcher(root, ".portfolio-roster a", ".portfolio-card", (_stage, target, item) => {
         setImage(target.querySelector(".portfolio-art img"), item);
         setText(target, ".hub-kicker", item.dataset.previewKicker);
+        setText(target, ".portfolio-rank__tier", item.dataset.previewRank);
+        setText(target, ".portfolio-rank__name", item.dataset.previewRole);
         setText(target, "h3", item.dataset.previewTitle);
         setText(target, ".portfolio-date", item.dataset.previewDate);
         setText(target, ".portfolio-desc", item.dataset.previewDesc);
         setText(target, ".portfolio-note", item.dataset.previewNote);
+        setText(target, ".portfolio-role", item.dataset.previewRole);
+        if (item.dataset.previewAccent) {
+          target.style.setProperty("--portfolio-accent", item.dataset.previewAccent);
+        }
       });
     });
   };
