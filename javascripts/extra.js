@@ -159,6 +159,7 @@
       }
       if (playerAudio.paused) {
         await playerAudio.play().catch(() => updatePlayerUi());
+        setPanelOpen(true);
       } else {
         playerAudio.pause();
       }
@@ -198,21 +199,25 @@
       updatePlayerUi();
     });
 
-    panel.querySelector("[data-player-play]").addEventListener("click", togglePlayback);
-    panel.querySelector("[data-player-play-text]").addEventListener("click", togglePlayback);
-    panel.querySelector("[data-player-prev]").addEventListener("click", () => {
+    panel.querySelector("[data-player-play]").addEventListener("click", (e) => { e.stopPropagation(); togglePlayback(); });
+    panel.querySelector("[data-player-play-text]").addEventListener("click", (e) => { e.stopPropagation(); togglePlayback(); });
+    panel.querySelector("[data-player-prev]").addEventListener("click", (e) => {
+      e.stopPropagation();
       loadPlayerTrack(playerIndex - 1, playerAudio && !playerAudio.paused);
     });
-    panel.querySelector("[data-player-next]").addEventListener("click", () => {
+    panel.querySelector("[data-player-next]").addEventListener("click", (e) => {
+      e.stopPropagation();
       loadPlayerTrack(playerIndex + 1, playerAudio && !playerAudio.paused);
     });
-    panel.querySelector("[data-player-progress]").addEventListener("input", (event) => {
+    panel.querySelector("[data-player-progress]").addEventListener("input", (e) => {
+      e.stopPropagation();
       if (playerAudio && Number.isFinite(playerAudio.duration)) {
-        playerAudio.currentTime = Number(event.target.value);
+        playerAudio.currentTime = Number(e.target.value);
       }
     });
-    panel.querySelector("[data-player-volume]").addEventListener("input", (event) => {
-      if (playerAudio) playerAudio.volume = Number(event.target.value);
+    panel.querySelector("[data-player-volume]").addEventListener("input", (e) => {
+      e.stopPropagation();
+      if (playerAudio) playerAudio.volume = Number(e.target.value);
     });
     playerAudio.addEventListener("loadedmetadata", updatePlayerUi);
     playerAudio.addEventListener("timeupdate", updatePlayerUi);
@@ -220,7 +225,7 @@
     playerAudio.addEventListener("pause", updatePlayerUi);
     playerAudio.addEventListener("ended", () => loadPlayerTrack(playerIndex + 1, true));
     document.addEventListener("click", (event) => {
-      if (!actions.contains(event.target)) setPanelOpen(false);
+      if (!actions.contains(event.target) && playerAudio?.paused) setPanelOpen(false);
     });
 
     actions.append(audio, portfolio, panel);
