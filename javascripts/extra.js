@@ -51,11 +51,13 @@
     const track = currentPlayerTrack();
     const hasSource = hasPlayerSource(track);
     const playing = hasSource && !playerAudio.paused;
+    const panelOpen = playerUi.panel.classList.contains("is-open");
     const duration = Number.isFinite(playerAudio.duration) ? playerAudio.duration : 0;
 
     playerUi.audioButton.classList.toggle("is-active", playing);
+    playerUi.audioButton.classList.toggle("is-open", panelOpen);
     playerUi.audioButton.setAttribute("aria-pressed", String(playing));
-    playerUi.audioButton.setAttribute("aria-expanded", String(playerUi.panel.classList.contains("is-open")));
+    playerUi.audioButton.setAttribute("aria-expanded", String(panelOpen));
     playerUi.panel.classList.toggle("is-playing", playing);
     playerUi.panel.classList.toggle("is-empty", !hasSource);
     playerUi.title.textContent = track?.title || "未命名曲目";
@@ -253,21 +255,11 @@
 
     const search = header.querySelector(".md-search");
     if (search) {
-      const toggle = document.getElementById("__search");
       const keepSearchInline = () => {
-        if (toggle) toggle.checked = false;
         search.removeAttribute("data-md-state");
       };
-      if (toggle && !toggle.dataset.searchLocked) {
-        toggle.dataset.searchLocked = "true";
-        toggle.addEventListener("change", () => {
-          if (toggle.checked) keepSearchInline();
-        });
-        toggle.addEventListener("click", keepSearchInline, true);
-      }
       search.addEventListener("focusin", keepSearchInline);
       search.addEventListener("input", keepSearchInline, true);
-      keepSearchInline();
       search.insertAdjacentElement("afterend", actions);
     } else {
       header.append(actions);
