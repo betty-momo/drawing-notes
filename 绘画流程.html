@@ -1269,29 +1269,41 @@
 <h1 id="_1">绘画流程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <div class="hub-stage hub-stage--process">
     <section class="hub-hero hub-hero--compact">
-        <p class="hub-kicker">PROCESS MILESTONE</p>
-        <h2>按作画顺序推进，每一步都能回跳</h2>
-        <p>先看整条路线，再进某个节点复盘。卡住时按编号回跳，不用从头翻。</p>
+        <p class="hub-kicker">PROCESS ROUTE</p>
+        <h2>把一张图拆成会切换的作战面板</h2>
+        <p>悬停任意节点，右侧会切到对应阶段。真正要复盘时，再点进去看具体笔记。</p>
     </section>
 
-    <section class="process-board" aria-label="绘画流程入口">
-        <div class="process-board__visual">
-            <img src="img/结构概括总图.png" alt="">
-            <span>ROUTE 01-11</span>
-        </div>
+    <section class="process-showcase" aria-label="绘画流程入口">
+        <nav class="process-switch" aria-label="流程节点">
+            <a class="is-active" href="流程/起草.html" data-preview-title="起草" data-preview-desc="先抓动态、体块和透视线。这个阶段决定画面能不能站住，不急着进入细节。" data-preview-img="img/火柴人.jpg" data-preview-kicker="STEP 01 / START"><span>01</span><strong>起草</strong><small>动态 / 体块</small></a>
+            <a href="流程/勾线.html" data-preview-title="勾线" data-preview-desc="线条开始做取舍，闭塞和断线都在这里决定。重点是让线稿服务结构。" data-preview-img="img/概括过程1.png" data-preview-kicker="STEP 02 / LINE"><span>02</span><strong>勾线</strong><small>取舍 / 闭塞</small></a>
+            <a href="流程/固有色.html" data-preview-title="固有色" data-preview-desc="先铺灰底和大色块，把颜色区域分清楚，避免一开始就陷进局部。" data-preview-img="img/色相.png" data-preview-kicker="STEP 03 / COLOR BASE"><span>03</span><strong>固有色</strong><small>灰底 / 分区</small></a>
+            <a href="流程/二分.html" data-preview-title="二分" data-preview-desc="把光影关系切成明暗两组，先处理大方向，再考虑微妙过渡。" data-preview-img="img/概括过程2.png" data-preview-kicker="STEP 04 / LIGHT"><span>04</span><strong>二分</strong><small>明暗分组</small></a>
+            <a href="流程/三分.html" data-preview-title="三分" data-preview-desc="补弱结构、腮红和细小色面，让画面从大块关系进入可读细节。" data-preview-img="img/概括过程3.png" data-preview-kicker="STEP 05 / DETAIL"><span>05</span><strong>三分</strong><small>弱结构</small></a>
+            <a href="流程/闭塞.html" data-preview-title="闭塞" data-preview-desc="处理接触面和遮挡处的暗部，让物体之间真的压在一起。" data-preview-img="img/典型曲面.png" data-preview-kicker="STEP 06 / OCCLUSION"><span>06</span><strong>闭塞</strong><small>接触暗部</small></a>
+            <a href="流程/灰面.html" data-preview-title="灰面" data-preview-desc="用过渡面塑造体积，灰面不只是中间色，而是形体转折。" data-preview-img="img/球柱方锥.png" data-preview-kicker="STEP 07 / MIDTONE"><span>07</span><strong>灰面</strong><small>过渡塑形</small></a>
+            <a href="流程/高光.html" data-preview-title="高光" data-preview-desc="最后提亮关键点，控制材质和视觉焦点，别让高光变成撒盐。" data-preview-img="img/眼睛.png" data-preview-kicker="STEP 08 / SHINE"><span>08</span><strong>高光</strong><small>最后提亮</small></a>
+            <a class="is-muted" href="流程/反光.html" data-preview-title="反光" data-preview-desc="反光负责暗部里的环境色，补得太多会脏，太少会死。" data-preview-img="img/莉莉的白色.png" data-preview-kicker="STEP 09 / BOUNCE"><span>09</span><strong>反光</strong><small>待补完</small></a>
+            <a class="is-muted" href="流程/塑造.html" data-preview-title="塑造" data-preview-desc="把边缘、转折和材质重新统一，避免每块细节各画各的。" data-preview-img="img/体块概括.png" data-preview-kicker="STEP 10 / FORM"><span>10</span><strong>塑造</strong><small>待补完</small></a>
+            <a class="is-muted" href="流程/光源衰减.html" data-preview-title="光源衰减" data-preview-desc="光不会平均洒在每个地方，衰减决定画面的层级和空间深度。" data-preview-img="img/三点透视俯视.png" data-preview-kicker="STEP 11 / FALLOFF"><span>11</span><strong>光源衰减</strong><small>待补完</small></a>
+        </nav>
 
-        <div class="process-rail">
-            <a class="process-node is-hot" href="流程/起草.html"><span>01</span><strong>起草</strong><small>动态与体块</small></a>
-            <a class="process-node" href="流程/勾线.html"><span>02</span><strong>勾线</strong><small>线条取舍</small></a>
-            <a class="process-node" href="流程/固有色.html"><span>03</span><strong>固有色</strong><small>灰底铺色</small></a>
-            <a class="process-node" href="流程/二分.html"><span>04</span><strong>二分</strong><small>明暗分组</small></a>
-            <a class="process-node" href="流程/三分.html"><span>05</span><strong>三分</strong><small>弱结构补色</small></a>
-            <a class="process-node" href="流程/闭塞.html"><span>06</span><strong>闭塞</strong><small>接触暗部</small></a>
-            <a class="process-node" href="流程/灰面.html"><span>07</span><strong>灰面</strong><small>过渡塑形</small></a>
-            <a class="process-node" href="流程/高光.html"><span>08</span><strong>高光</strong><small>最后提亮</small></a>
-            <a class="process-node is-muted" href="流程/反光.html"><span>09</span><strong>反光</strong><small>待补完</small></a>
-            <a class="process-node is-muted" href="流程/塑造.html"><span>10</span><strong>塑造</strong><small>待补完</small></a>
-            <a class="process-node is-muted" href="流程/光源衰减.html"><span>11</span><strong>光源衰减</strong><small>待补完</small></a>
+        <a class="process-focus" href="流程/起草.html">
+            <div class="process-focus__copy">
+                <p class="hub-kicker">STEP 01 / START</p>
+                <h3>起草</h3>
+                <p>先抓动态、体块和透视线。这个阶段决定画面能不能站住，不急着进入细节。</p>
+                <span>进入节点</span>
+            </div>
+            <img src="img/火柴人.jpg" alt="">
+        </a>
+
+        <div class="process-meter" aria-hidden="true">
+            <span>SKETCH</span>
+            <span>LINE</span>
+            <span>VALUE</span>
+            <span>FINISH</span>
         </div>
     </section>
 </div>
