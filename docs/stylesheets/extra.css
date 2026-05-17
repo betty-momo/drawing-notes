@@ -1525,7 +1525,7 @@ a {
     --neo-pink: #ff4f9a;
     --neo-yellow: #f5d55f;
     --neo-shadow: 0 26px 70px rgba(0, 0, 0, 0.42);
-    --neo-header-height: 4rem;
+    --neo-header-height: 3.15rem;
 }
 
 .md-header {
@@ -1573,7 +1573,7 @@ a {
     width: 100%;
     max-width: none;
     height: var(--neo-header-height);
-    padding: 0 clamp(1.1rem, 3.8vw, 5rem);
+    padding: 0 clamp(1rem, 3.4vw, 4.4rem);
     gap: 0.45rem;
 }
 
@@ -1582,22 +1582,22 @@ a {
 }
 
 .md-header__button.md-logo {
-    width: 2.55rem;
-    height: 2.55rem;
-    margin: 0 0.35rem 0 0;
-    padding: 0.42rem;
+    width: 2.05rem;
+    height: 2.05rem;
+    margin: 0 0.3rem 0 0;
+    padding: 0.34rem;
 }
 
 .md-header__button.md-logo :is(svg, img) {
-    width: 1.72rem;
-    height: 1.72rem;
+    width: 1.38rem;
+    height: 1.38rem;
 }
 
 .md-header__title {
-    flex: 0 0 clamp(7rem, 12vw, 12rem);
+    flex: 0 0 clamp(6.3rem, 10vw, 10rem);
     margin: 0;
     color: var(--neo-ink);
-    font-size: clamp(1rem, 1.35vw, 1.35rem);
+    font-size: clamp(0.84rem, 1vw, 1.02rem);
     font-weight: 900;
     text-shadow: 0 0 18px rgba(71, 232, 255, 0.14);
 }
@@ -1616,8 +1616,8 @@ a {
 }
 
 .md-header .md-icon {
-    width: 2.35rem;
-    height: 2.35rem;
+    width: 2rem;
+    height: 2rem;
     border: 1px solid rgba(245, 247, 255, 0.16);
     background: rgba(245, 247, 255, 0.06);
 }
@@ -1628,22 +1628,26 @@ a {
     background: rgba(71, 232, 255, 0.1);
 }
 
+.md-header__inner > label[for="__search"] {
+    display: none;
+}
+
 .md-search {
-    width: clamp(7.6rem, 12vw, 12rem);
-    margin-left: 0.55rem;
+    width: clamp(6.8rem, 10vw, 10rem);
+    margin-left: 0.42rem;
 }
 
 .md-search__form {
-    height: 2.25rem;
+    height: 2rem;
     border: 1px solid rgba(245, 213, 95, 0.24);
-    border-radius: 0.34rem;
+    border-radius: 0.26rem;
     background: rgba(33, 31, 24, 0.86);
 }
 
 .md-search__input {
-    height: 2.25rem;
+    height: 2rem;
     color: var(--neo-ink);
-    font-size: 0.86rem;
+    font-size: 0.72rem;
     font-weight: 700;
 }
 
@@ -1655,9 +1659,9 @@ a {
 [data-md-color-scheme="slate"] .md-tabs {
     position: absolute;
     top: 0;
-    right: clamp(12.5rem, 18vw, 20rem);
+    right: clamp(11rem, 16vw, 18rem);
     bottom: 0;
-    left: clamp(12rem, 19vw, 20rem);
+    left: clamp(10.6rem, 17vw, 18rem);
     z-index: 2;
     display: flex;
     width: auto !important;
@@ -1681,7 +1685,7 @@ a {
     height: var(--neo-header-height);
     grid-template-columns: repeat(4, minmax(4.6rem, 1fr));
     align-items: center;
-    gap: clamp(0.7rem, 1.8vw, 2.4rem);
+    gap: clamp(0.55rem, 1.5vw, 2rem);
     overflow: visible;
 }
 
@@ -1700,7 +1704,7 @@ a {
     margin: 0;
     padding: 0 0.2rem;
     color: rgba(245, 247, 255, 0.55);
-    font-size: clamp(0.86rem, 1vw, 1.02rem);
+    font-size: clamp(0.74rem, 0.82vw, 0.88rem);
     font-weight: 900;
     line-height: 1;
     opacity: 1;
@@ -1710,7 +1714,7 @@ a {
     content: "";
     position: absolute;
     right: 22%;
-    bottom: 1.1rem;
+    bottom: 0.64rem;
     left: 22%;
     height: 2px;
     background: var(--neo-cyan);
@@ -2590,8 +2594,43 @@ a {
 
 /* --- Article content presentation pass --- */
 @supports selector(.md-content__inner:has(.home-stage)) {
+    body:not(:has(.home-stage)) {
+        background: var(--neo-bg);
+    }
+
+    body:not(:has(.home-stage)) .md-container,
+    body:not(:has(.home-stage)) .md-main {
+        background: var(--neo-bg);
+    }
+
+    body:not(:has(.home-stage)) .md-main__inner {
+        display: block;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    body:not(:has(.home-stage)) .md-content {
+        display: grid;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        justify-items: center;
+    }
+
+    body:not(:has(.home-stage)) .md-sidebar,
+    body:not(:has(.home-stage)) .md-content__button {
+        display: none;
+    }
+
     .md-content__inner:not(:has(.home-stage)) {
         counter-reset: note-section;
+        box-sizing: border-box;
+        width: min(1120px, calc(100vw - 3rem));
+        max-width: none;
+        margin: clamp(1rem, 3vw, 2.4rem) 0 clamp(2rem, 5vw, 4rem) !important;
+        padding: clamp(1.05rem, 2.4vw, 1.8rem);
+        justify-self: center;
     }
 
     .md-content__inner:not(:has(.home-stage)) > h1:first-of-type {
