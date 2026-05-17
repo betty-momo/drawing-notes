@@ -10,18 +10,18 @@
 
   const playerTracks = [
     {
-      title: "曲目 01",
-      artist: "待上传音乐",
-      src: "",
+      title: "unfulfilled wish",
+      artist: "本地音频",
+      src: "audio/unfulfilled wish.ogg",
       cover: "",
-      note: "把音频放到 docs/audio/，封面放到 docs/img/，再在 playerTracks 里填 src 和 cover。",
+      note: "已接入本地音频，暂时没有封面时会显示唱片占位。",
     },
     {
-      title: "曲目 02",
-      artist: "待上传音乐",
-      src: "",
+      title: "星空",
+      artist: "本地音频",
+      src: "audio/星空.ogg",
       cover: "",
-      note: "这里可以继续放第二首歌的路径、封面和说明。",
+      note: "已接入本地音频，后续可以继续补封面和曲目信息。",
     },
     {
       title: "曲目 03",
