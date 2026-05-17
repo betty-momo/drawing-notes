@@ -43,7 +43,7 @@ hide:
         <a href="绘画流程.html"><span>PROCESS</span>绘画流程节点入口</a>
         <a href="专题深入.html"><span>DETAIL</span>专题训练汇总入口</a>
     </section>
-
+    
     <section class="route-panel">
         <div class="route-panel__header">
             <div>
@@ -63,7 +63,7 @@ hide:
             <a class="flow-step" href="流程/高光.html"><span>08</span>高光<small>最后提亮</small></a>
         </div>
     </section>
-
+    
     <section class="home-section">
         <div class="section-heading">
             <p class="section-eyebrow">CORE FILES</p>
@@ -102,7 +102,7 @@ hide:
             </a>
         </div>
     </section>
-
+    
     <section class="home-section">
         <div class="section-heading">
             <p class="section-eyebrow">PROCESS MAP</p>
@@ -164,7 +164,7 @@ hide:
             <a class="pending-link" href="流程/光源衰减.html">待补完：光源衰减</a>
         </div>
     </section>
-
+    
     <section class="home-section">
         <div class="section-heading">
             <p class="section-eyebrow">DETAIL TRAINING</p>
@@ -205,7 +205,7 @@ hide:
             </a>
         </div>
     </section>
-
+    
     <section class="home-section home-section--courses">
         <div class="section-heading">
             <p class="section-eyebrow">COURSE ARCHIVE</p>
@@ -217,8 +217,15 @@ hide:
                 <a href="专题/头发塑造.html" data-preview-kicker="PAID COURSE / CHARACTER" data-preview-title="kana匠人绘粒子课" data-preview-direction="日系胸像" data-preview-desc="偏向角色头像、脸部与头发塑造，适合用来拆角色完成度和局部精修。" data-preview-note="画胸像时优先回看：五官、头发体积、边缘处理和画面干净度。" data-preview-img="img/螳螂鬓.png"><img src="img/螳螂鬓.png" alt=""><span><strong>kana匠人绘粒子课</strong><small>日系胸像</small></span></a>
                 <a href="色彩知识.html" data-preview-kicker="PUBLIC COURSE / COLOR" data-preview-title="咸鱼中下游公益色彩课" data-preview-direction="色彩入门" data-preview-desc="整理色相、灰度、冷暖和图层混合模式，解决颜色脏、灰、乱的问题。" data-preview-note="每次上色前先检查黑白关系，再看冷暖和纯度，不要一上来就堆滤镜。" data-preview-img="img/色相.png"><img src="img/色相.png" alt=""><span><strong>咸鱼中下游公益色彩课</strong><small>色彩入门</small></span></a>
                 <a href="绘画流程.html" data-preview-kicker="PRACTICE NOTES / EXTRA" data-preview-title="散修炼体" data-preview-direction="零散补充" data-preview-desc="放没有归入主线课程的小技巧、小练习和临时补丁，用来补当前最短的短板。" data-preview-note="适合画到卡壳时快速翻，不作为主线推进，只补具体问题。" data-preview-img="img/结构概括总图.png"><img src="img/结构概括总图.png" alt=""><span><strong>散修炼体</strong><small>零散补充</small></span></a>
+                <a href="基础知识.html" data-preview-kicker="COURSE / CORE" data-preview-title="k大三件套" data-preview-direction="核心基础" data-preview-desc="放在基础路线里的核心课位，适合和人体、透视、明暗一起反复对照。" data-preview-note="学完后可以直接从这里删掉，页面结构不会受影响。" data-preview-img="img/结构概括总图.png"><img src="img/结构概括总图.png" alt=""><span><strong>k大三件套</strong><small>核心基础</small></span></a>
+                <a href="基础知识.html" data-preview-kicker="COURSE / SLOT" data-preview-title="han0v0" data-preview-direction="待补充" data-preview-desc="先作为课程槽位保留，后面可以把对应主题、截图或复盘补进来。" data-preview-note="学完就删，不需要单独区分免费或付费。" data-preview-img="img/火柴人.jpg"><img src="img/火柴人.jpg" alt=""><span><strong>han0v0</strong><small>待补充</small></span></a>
+                <a href="绘画流程.html" data-preview-kicker="COURSE / SLOT" data-preview-title="元大" data-preview-direction="待补充" data-preview-desc="先挂到流程路线里，之后按实际学习内容改成对应方向。" data-preview-note="这里只负责存入口和提醒，不把课程拆成额外分类。" data-preview-img="img/概括过程1.png"><img src="img/概括过程1.png" alt=""><span><strong>元大</strong><small>待补充</small></span></a>
+                <a href="绘画流程.html" data-preview-kicker="COURSE / SLOT" data-preview-title="山药" data-preview-direction="待补充" data-preview-desc="作为待学习课程入口，后面可替换成笔记页或专题页链接。" data-preview-note="学完后删掉这一条即可，右侧展示会自动回到其他课程。" data-preview-img="img/概括过程2.png"><img src="img/概括过程2.png" alt=""><span><strong>山药</strong><small>待补充</small></span></a>
+                <a href="专题深入.html" data-preview-kicker="COURSE / SLOT" data-preview-title="毛厂" data-preview-direction="待补充" data-preview-desc="先放在专题路线里，等学习内容明确后再改说明和配图。" data-preview-note="这块是临时学习清单，不会和最终笔记绑定死。" data-preview-img="img/概括过程3.png"><img src="img/概括过程3.png" alt=""><span><strong>毛厂</strong><small>待补充</small></span></a>
+                <a href="专题深入.html" data-preview-kicker="COURSE / SLOT" data-preview-title="翔腿颓" data-preview-direction="待补充" data-preview-desc="课程入口先占位，适合后续补局部专题或流程复盘。" data-preview-note="可以把这里当待办，学完删条目就好。" data-preview-img="img/典型曲面.png"><img src="img/典型曲面.png" alt=""><span><strong>翔腿颓</strong><small>待补充</small></span></a>
+                <a href="色彩知识.html" data-preview-kicker="COURSE / SLOT" data-preview-title="Coloso" data-preview-direction="待补充" data-preview-desc="先作为综合课程入口保留，后面按实际内容归到色彩、流程或专题。" data-preview-note="只放在同一个课程模板里，不再额外拆分。" data-preview-img="img/莉莉的白色.png"><img src="img/莉莉的白色.png" alt=""><span><strong>Coloso</strong><small>待补充</small></span></a>
             </nav>
-
+    
             <a class="course-feature" href="基础知识.html">
                 <div class="course-feature__copy">
                     <p class="hub-kicker">PAID COURSE / FOUNDATION</p>
@@ -236,7 +243,7 @@ hide:
                     <img src="img/体块概括.png" alt="">
                 </figure>
             </a>
-
+    
             <aside class="course-checks" aria-label="画前检查">
                 <h3>画前检查</h3>
                 <div class="tip-row">

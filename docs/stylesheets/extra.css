@@ -1623,13 +1623,17 @@ a {
 
 .md-search {
     width: clamp(9rem, 13vw, 12.6rem);
+    max-width: clamp(9rem, 13vw, 12.6rem);
     margin-left: auto;
     flex: 0 0 auto;
     position: relative;
 }
 
-.md-search:focus-within {
+.md-search:focus-within,
+.md-search[data-md-state="active"] {
     width: clamp(9rem, 13vw, 12.6rem);
+    max-width: clamp(9rem, 13vw, 12.6rem);
+    height: auto;
 }
 
 .md-header .md-search__inner,
@@ -1643,7 +1647,21 @@ a {
     right: auto;
     position: relative;
     top: auto;
+    bottom: auto;
+    height: auto;
+    margin: 0;
     transform: none;
+}
+
+.md-search[data-md-state="active"] .md-search__inner,
+[dir="ltr"] .md-search[data-md-state="active"] .md-search__inner,
+[dir="rtl"] .md-search[data-md-state="active"] .md-search__inner {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    transform: none !important;
 }
 
 .md-search__overlay,
@@ -1655,7 +1673,15 @@ a {
 
 .md-search__form {
     height: 2.05rem;
+    width: 100%;
     border: 1px solid rgba(245, 213, 95, 0.28);
+    border-radius: 0.26rem;
+    background: rgba(33, 31, 24, 0.86);
+    box-shadow: none;
+}
+
+.md-search[data-md-state="active"] .md-search__form {
+    height: 2.05rem;
     border-radius: 0.26rem;
     background: rgba(33, 31, 24, 0.86);
     box-shadow: none;
@@ -1675,6 +1701,13 @@ a {
     color: var(--neo-ink);
     font-size: 0.72rem;
     font-weight: 700;
+}
+
+.md-search[data-md-state="active"] .md-search__input {
+    height: 2.05rem;
+    padding-right: 0.45rem;
+    padding-left: 2rem;
+    font-size: 0.72rem;
 }
 
 .md-search:not(:focus-within) .md-search__input {
@@ -2556,6 +2589,10 @@ a {
     align-self: start;
     align-content: center;
     gap: 0.62rem;
+    max-height: clamp(25rem, 40vw, 31rem);
+    overflow-y: auto;
+    padding-right: 0.18rem;
+    scrollbar-width: thin;
 }
 
 .home-stage .course-roster a {
@@ -3973,91 +4010,115 @@ a {
 }
 
 .hub-stage--portfolio {
+    min-height: calc(100vh - 3.2rem);
+    padding: 0;
+    overflow: hidden;
     background:
-        linear-gradient(90deg, rgba(8, 10, 18, 0.98), rgba(8, 10, 18, 0.72) 45%, rgba(8, 10, 18, 0.92)),
-        linear-gradient(135deg, rgba(71, 232, 255, 0.1), transparent 34%, rgba(255, 79, 154, 0.12)),
+        radial-gradient(circle at 74% 28%, rgba(71, 232, 255, 0.14), transparent 24rem),
+        linear-gradient(90deg, rgba(5, 6, 10, 0.98), rgba(5, 6, 10, 0.66) 56%, rgba(5, 6, 10, 0.95)),
+        repeating-linear-gradient(-16deg, rgba(255, 255, 255, 0.045) 0 2px, transparent 2px 4.4rem),
         url("../img/莉莉的白色.png") center / cover fixed;
 }
 
 .portfolio-showcase {
+    position: relative;
     display: grid;
-    max-width: 88rem;
-    min-height: 35rem;
-    grid-template-columns: minmax(12rem, 0.32fr) minmax(30rem, 1fr);
-    gap: clamp(0.8rem, 2vw, 1.6rem);
+    max-width: none;
+    min-height: calc(100vh - 3.2rem);
+    grid-template-columns: clamp(5.2rem, 8vw, 7rem) minmax(0, 1fr);
+    gap: 0;
 }
 
 .portfolio-roster {
-    display: grid;
+    position: relative;
+    z-index: 5;
+    display: flex;
+    width: clamp(3.9rem, 5vw, 4.8rem);
+    max-height: min(34rem, calc(100vh - 8rem));
+    flex-direction: column;
+    align-self: center;
     align-content: center;
-    gap: 0.7rem;
+    gap: 0.72rem;
+    justify-self: center;
+    padding: 0.82rem 0.46rem;
+    overflow: hidden auto;
+    border: 1px solid rgba(245, 247, 255, 0.12);
+    border-radius: 999px;
+    background:
+        linear-gradient(180deg, rgba(245, 247, 255, 0.1), rgba(245, 247, 255, 0.03)),
+        rgba(22, 23, 25, 0.86);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.45), 0 20px 36px rgba(0, 0, 0, 0.42);
+    scrollbar-width: none;
 }
 
 .portfolio-roster a {
+    position: relative;
     display: grid;
-    min-height: 4.8rem;
-    grid-template-columns: 3.4rem 1fr;
-    align-items: center;
-    gap: 0.76rem;
-    padding: 0.55rem 0.72rem;
+    width: clamp(3rem, 4vw, 3.7rem);
+    height: clamp(3rem, 4vw, 3.7rem);
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
     color: var(--neo-ink) !important;
-    border: 1px solid rgba(245, 247, 255, 0.12);
-    background: rgba(8, 10, 18, 0.86);
+    border: 2px solid rgba(245, 247, 255, 0.18);
+    border-radius: 50%;
+    background: rgba(8, 10, 18, 0.88);
     text-decoration: none;
-    clip-path: polygon(0 0, calc(100% - 0.9rem) 0, 100% 0.9rem, 100% 100%, 0.9rem 100%, 0 calc(100% - 0.9rem));
+    clip-path: none;
+    transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
 }
 
 .portfolio-roster a:hover,
 .portfolio-roster a.is-active {
-    border-color: rgba(71, 232, 255, 0.62);
-    background: rgba(71, 232, 255, 0.13);
+    border-color: var(--portfolio-accent, var(--neo-cyan));
+    background: rgba(71, 232, 255, 0.12);
+    box-shadow: 0 0 0 0.25rem rgba(71, 232, 255, 0.14), 0 0 24px rgba(71, 232, 255, 0.35);
+    transform: scale(1.06);
 }
 
 .portfolio-roster img {
     display: block;
-    width: 3.4rem;
-    height: 3.4rem;
+    width: 100%;
+    height: 100%;
     margin: 0;
-    padding: 0.11rem;
     object-fit: cover;
-    border: 2px solid rgba(71, 232, 255, 0.72);
+    border: 0;
     border-radius: 50%;
-    background: rgba(8, 10, 18, 0.94);
-    box-shadow: inset 0 0 0 2px rgba(8, 10, 18, 0.9);
+    box-shadow: none;
 }
 
-.portfolio-roster strong,
-.portfolio-roster small {
-    display: block;
-}
-
-.portfolio-roster strong {
-    color: var(--neo-ink);
-    font-size: 0.92rem;
-    line-height: 1.2;
-}
-
-.portfolio-roster small {
-    margin-top: 0.2rem;
-    color: var(--neo-muted);
-    font-size: 0.68rem;
+.portfolio-roster span {
+    position: absolute;
+    right: -0.1rem;
+    bottom: -0.1rem;
+    display: grid;
+    width: 1.25rem;
+    height: 1.25rem;
+    place-items: center;
+    color: #071018;
+    border-radius: 50%;
+    background: var(--portfolio-accent, var(--neo-cyan));
+    font-size: 0.54rem;
+    font-weight: 900;
 }
 
 .portfolio-card {
+    --portfolio-accent: var(--neo-cyan);
     position: relative;
     display: grid;
-    height: clamp(35rem, 50vw, 42rem);
+    height: calc(100vh - 3.2rem);
     min-height: 0;
-    grid-template-columns: minmax(18rem, 0.76fr) minmax(22rem, 1fr);
+    grid-template-columns: minmax(24rem, 0.62fr) minmax(34rem, 1fr);
     overflow: hidden;
     color: var(--neo-ink) !important;
-    border: 1px solid var(--neo-line);
+    border: 0;
     background:
-        linear-gradient(90deg, rgba(8, 10, 18, 0.98), rgba(8, 10, 18, 0.58)),
-        rgba(8, 10, 18, 0.92);
-    box-shadow: var(--neo-shadow);
+        linear-gradient(90deg, rgba(5, 6, 10, 0.98), rgba(5, 6, 10, 0.76) 48%, rgba(5, 6, 10, 0.28)),
+        radial-gradient(circle at 68% 42%, color-mix(in srgb, var(--portfolio-accent) 20%, transparent), transparent 26rem),
+        rgba(5, 6, 10, 0.92);
+    box-shadow: none;
     text-decoration: none;
-    clip-path: polygon(0 0, calc(100% - 2.4rem) 0, 100% 2.4rem, 100% 100%, 0 100%);
+    clip-path: none;
 }
 
 .portfolio-card::before {
@@ -4066,35 +4127,106 @@ a {
     inset: 0;
     z-index: 1;
     background:
-        linear-gradient(90deg, rgba(71, 232, 255, 0.12), transparent 46%),
-        repeating-linear-gradient(0deg, rgba(245, 247, 255, 0.04) 0 1px, transparent 1px 3.4rem);
+        linear-gradient(180deg, transparent 0 72%, rgba(5, 6, 10, 0.92)),
+        repeating-linear-gradient(0deg, rgba(245, 247, 255, 0.05) 0 1px, transparent 1px 3.3rem);
+    pointer-events: none;
+}
+
+.portfolio-card::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 10%;
+    left: 24%;
+    z-index: 1;
+    height: 3px;
+    background: linear-gradient(90deg, var(--portfolio-accent), var(--neo-pink), transparent);
+    opacity: 0.82;
+}
+
+.portfolio-bg-word {
+    position: absolute;
+    right: -5vw;
+    top: 31%;
+    z-index: 0;
+    color: rgba(245, 247, 255, 0.13);
+    font-family: Impact, "Arial Black", sans-serif;
+    font-size: clamp(6rem, 16vw, 16rem);
+    font-weight: 900;
+    line-height: 0.8;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
     pointer-events: none;
 }
 
 .portfolio-card__copy {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     display: flex;
+    min-height: 0;
     flex-direction: column;
     justify-content: center;
-    gap: 0.85rem;
-    padding: clamp(1.35rem, 3vw, 2.5rem);
+    gap: 0.42rem;
+    max-width: 36rem;
+    overflow: hidden;
+    padding: clamp(2rem, 5vw, 5rem) clamp(1.25rem, 4vw, 4rem);
 }
 
 .portfolio-card__copy h3 {
     margin: 0;
     color: var(--neo-ink);
-    font-size: clamp(1.9rem, 3.2vw, 3rem);
+    font-size: clamp(1.85rem, 3.9vw, 3.9rem);
     line-height: 1.08;
     word-break: keep-all;
+}
+
+.portfolio-rank {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.portfolio-rank__tier {
+    display: grid;
+    width: 2.78rem;
+    height: 2.78rem;
+    place-items: center;
+    color: #071018;
+    background: var(--portfolio-accent);
+    font-family: var(--lily-font-ui);
+    font-size: 0.72rem;
+    font-weight: 900;
+    line-height: 1.05;
+    text-align: center;
+    clip-path: polygon(0 0, 78% 0, 100% 22%, 100% 100%, 0 100%);
+}
+
+.portfolio-rank__name {
+    color: var(--portfolio-accent);
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    line-height: 1.1;
+}
+
+.portfolio-role {
+    margin: 0;
+    color: var(--neo-ink);
+    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+    font-weight: 900;
+}
+
+.portfolio-scanline {
+    width: min(31rem, 100%);
+    height: 3px;
+    margin: 0.08rem 0 0.28rem;
+    background: linear-gradient(90deg, var(--portfolio-accent), var(--neo-pink), transparent);
 }
 
 .portfolio-meta {
     display: grid;
     margin: 0;
-    padding: 0.72rem 0.85rem;
-    border-left: 3px solid var(--neo-cyan);
-    background: rgba(71, 232, 255, 0.08);
+    padding: 0.52rem 0.72rem;
+    border-left: 3px solid var(--portfolio-accent);
+    background: color-mix(in srgb, var(--portfolio-accent) 12%, transparent);
 }
 
 .portfolio-meta div {
@@ -4115,7 +4247,7 @@ a {
 
 .portfolio-field h4 {
     margin: 0 0 0.32rem;
-    color: var(--neo-cyan);
+    color: var(--portfolio-accent);
     font-size: 0.82rem;
     letter-spacing: 0.04em;
 }
@@ -4123,8 +4255,8 @@ a {
 .portfolio-field p {
     margin: 0;
     color: var(--neo-muted);
-    font-size: 0.92rem;
-    line-height: 1.72;
+    font-size: 0.84rem;
+    line-height: 1.55;
 }
 
 .portfolio-art {
@@ -4135,7 +4267,7 @@ a {
     min-height: 0;
     justify-self: stretch;
     align-self: stretch;
-    margin: 0;
+    margin: 0 !important;
     overflow: hidden;
 }
 
@@ -4144,12 +4276,13 @@ a {
     height: 100%;
     min-height: 0;
     margin: 0;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: right bottom;
     border: 0;
     border-radius: 0;
     box-shadow: none;
-    opacity: 0.9;
-    filter: saturate(1.04) contrast(1.04);
+    opacity: 0.96;
+    filter: saturate(1.05) contrast(1.06) drop-shadow(-1.2rem 1.6rem 2rem rgba(0, 0, 0, 0.56));
     transition: opacity 120ms ease, transform 180ms ease;
 }
 
@@ -4160,11 +4293,11 @@ a {
 
 .portfolio-art figcaption {
     position: absolute;
-    right: 1rem;
-    bottom: 1rem;
+    right: clamp(1rem, 3vw, 3rem);
+    bottom: clamp(1rem, 3vw, 3rem);
     padding: 0.4rem 0.7rem;
     color: #071018;
-    background: var(--neo-cyan);
+    background: var(--portfolio-accent);
     font-size: 0.72rem;
     font-weight: 900;
 }
@@ -4242,10 +4375,14 @@ a {
     }
 
     .portfolio-roster {
-        grid-template-columns: repeat(3, minmax(10rem, 1fr));
-        align-content: stretch;
+        width: auto;
+        max-height: none;
+        flex-direction: row;
+        justify-self: stretch;
+        margin: 0.8rem;
         overflow-x: auto;
-        padding-bottom: 0.25rem;
+        overflow-y: hidden;
+        border-radius: 999px;
     }
 
     .topic-rail a,
@@ -4254,6 +4391,16 @@ a {
         grid-template-columns: 1fr;
         justify-items: center;
         text-align: center;
+    }
+
+    .portfolio-roster a {
+        min-width: auto;
+        width: 3.2rem;
+        height: 3.2rem;
+    }
+
+    .portfolio-card__copy {
+        padding: 1.6rem 1rem;
     }
 }
 
@@ -4283,10 +4430,13 @@ a {
 
     .md-search {
         width: clamp(7rem, 34vw, 9rem);
+        max-width: clamp(7rem, 34vw, 9rem);
     }
 
-    .md-search:focus-within {
+    .md-search:focus-within,
+    .md-search[data-md-state="active"] {
         width: clamp(7rem, 34vw, 9rem);
+        max-width: clamp(7rem, 34vw, 9rem);
     }
 
     .neo-action--portfolio {
