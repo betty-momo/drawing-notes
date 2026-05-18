@@ -5,6 +5,7 @@ use_directory_urls: false
 
 theme:
   name: material
+  logo: img/ender-lilies-crest-logo.png
   language: zh
   font:
     text: Noto Serif SC

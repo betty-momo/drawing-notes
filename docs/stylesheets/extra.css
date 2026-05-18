@@ -1597,6 +1597,12 @@ a {
     height: 1.38rem;
 }
 
+.md-header__button.md-logo img,
+.md-nav__button.md-logo img {
+    object-fit: contain;
+    filter: drop-shadow(0 0 0.38rem rgba(71, 232, 255, 0.55));
+}
+
 .md-header__title,
 .md-header__topic,
 .md-header__topic[data-md-component="header-topic"] {
