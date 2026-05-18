@@ -1586,15 +1586,15 @@ a {
 }
 
 .md-header__button.md-logo {
-    width: 2.05rem;
-    height: 2.05rem;
+    width: 2.28rem;
+    height: 2.28rem;
     margin: 0 0.3rem 0 0;
-    padding: 0.34rem;
+    padding: 0.24rem;
 }
 
 .md-header__button.md-logo :is(svg, img) {
-    width: 1.38rem;
-    height: 1.38rem;
+    width: 1.78rem;
+    height: 1.78rem;
 }
 
 .md-header__button.md-logo img,
