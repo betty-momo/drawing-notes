@@ -23,6 +23,13 @@
       cover: "",
       note: "已接入本地音频，后续可以继续补封面和曲目信息。",
     },
+    {
+      title: "静かな夜を",
+      artist: "本地音频",
+      src: "audio/静かな夜を.ogg",
+      cover: "",
+      note: "已接入本地音频，暂时没有封面时会显示唱片占位。",
+    },
   ];
 
   let playerIndex = 0;
