@@ -2773,8 +2773,12 @@ a {
     color: #071018;
     border: 0;
     border-radius: 0;
-    background: var(--neo-cyan);
+    background: var(--neo-pink);
     box-shadow: none;
+}
+
+.home-stage .tip-box.tip .tip-icon {
+    background: var(--neo-cyan);
 }
 
 .home-stage .course-showcase {
