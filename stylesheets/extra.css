@@ -2491,7 +2491,7 @@ a {
     background:
         radial-gradient(circle at 50% 50%, transparent 58%, rgba(71, 232, 255, 0.08) 59%, transparent 62%),
         conic-gradient(from 18deg, rgba(71, 232, 255, 0.38), rgba(255, 79, 154, 0.22), rgba(71, 232, 255, 0.38));
-    opacity: 0.46;
+    opacity: 0.54;
     -webkit-mask: radial-gradient(circle, transparent 61%, #000 62% 64%, transparent 65%);
     mask: radial-gradient(circle, transparent 61%, #000 62% 64%, transparent 65%);
     pointer-events: none;
@@ -2500,19 +2500,8 @@ a {
 
 .home-stage .home-hero__visual::after {
     inset: 25%;
-    opacity: 0.32;
+    opacity: 0.38;
     transform: rotate(28deg);
-}
-
-.home-stage .home-hero__visual:hover {
-    opacity: 0.86;
-}
-
-.home-stage .home-hero__visual:hover::before,
-.home-stage .home-hero__visual:hover::after {
-    opacity: 0.62;
-    filter: drop-shadow(0 0 1.1rem rgba(71, 232, 255, 0.26)) drop-shadow(0 0 1.4rem rgba(255, 79, 154, 0.18));
-    transform: rotate(10deg) scale(1.02);
 }
 
 .home-stage .hero-shot {
