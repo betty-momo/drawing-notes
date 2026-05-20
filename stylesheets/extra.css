@@ -2474,11 +2474,11 @@ a {
     aspect-ratio: 1;
     display: block;
     justify-self: end;
-    opacity: 0.68;
+    opacity: 1;
     transform: translate(clamp(2.4rem, 7vw, 7rem), clamp(2rem, 5vw, 4.7rem)) scale(0.9);
     transform-origin: center;
     pointer-events: auto;
-    transition: opacity 240ms ease, transform 280ms ease;
+    transition: transform 280ms ease;
 }
 
 .home-stage .home-hero__visual::before,
@@ -2486,6 +2486,7 @@ a {
     content: "";
     position: absolute;
     inset: 8%;
+    z-index: 0;
     border: 1px solid rgba(71, 232, 255, 0.28);
     border-radius: 50%;
     background:
@@ -2506,28 +2507,53 @@ a {
 
 .home-stage .hero-shot {
     position: absolute;
+    z-index: 1;
     display: block;
-    object-fit: cover;
     width: 6.4rem;
     height: 6.4rem;
-    opacity: 0.42;
+    opacity: 1;
     border: 1px solid rgba(71, 232, 255, 0.32);
     border-radius: 50%;
     box-shadow:
         0 14px 28px rgba(0, 0, 0, 0.22),
         0 0 18px rgba(71, 232, 255, 0.12);
-    clip-path: none;
+    background: rgba(7, 8, 14, 0.94);
+    overflow: hidden;
     filter: saturate(0.92) brightness(0.92);
+    line-height: 0;
     transition:
-        opacity 220ms ease,
         transform 260ms ease,
         filter 220ms ease,
         border-color 220ms ease,
         box-shadow 260ms ease;
 }
 
+.home-stage .hero-shot img {
+    position: absolute;
+    inset: -3%;
+    width: 106%;
+    max-width: none;
+    height: 106%;
+    margin: 0;
+    display: block;
+    object-fit: cover;
+    object-position: var(--shot-position, 50% 50%);
+    transform: scale(var(--shot-zoom, 1));
+    transform-origin: var(--shot-origin, center);
+}
+
+.home-stage .hero-shot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    background: rgba(5, 14, 28, 0.38);
+    pointer-events: none;
+    transition: background 220ms ease;
+}
+
 .home-stage .hero-shot:hover {
-    opacity: 0.96;
     border-color: rgba(71, 232, 255, 0.72);
     filter: saturate(1.14) brightness(1.04);
     box-shadow:
@@ -2536,9 +2562,14 @@ a {
         0 0 34px rgba(255, 79, 154, 0.14);
 }
 
+.home-stage .hero-shot:hover::after {
+    background: rgba(5, 14, 28, 0.08);
+}
+
 .home-stage .hero-shot--main {
     right: 7%;
     top: 6%;
+    --shot-position: 50% 50%;
     transform: rotate(7deg) scale(0.96);
 }
 
@@ -2551,6 +2582,9 @@ a {
     bottom: 16%;
     width: 5.5rem;
     height: 5.5rem;
+    --shot-position: 52% 28%;
+    --shot-origin: 52% 28%;
+    --shot-zoom: 1.08;
     transform: rotate(-8deg) scale(0.92);
 }
 
@@ -2563,6 +2597,9 @@ a {
     bottom: 8%;
     width: 4.8rem;
     height: 4.8rem;
+    --shot-position: 70% 42%;
+    --shot-origin: 70% 42%;
+    --shot-zoom: 1.06;
     transform: rotate(11deg) scale(0.9);
 }
 
