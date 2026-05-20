@@ -32,9 +32,9 @@ hide:
             </div>
         </div>
         <div class="home-hero__visual" aria-hidden="true">
-            <img class="hero-shot hero-shot--main" src="img/眼睛.png" alt="">
-            <img class="hero-shot hero-shot--side" src="img/色相.png" alt="">
-            <img class="hero-shot hero-shot--small" src="img/结构概括总图.png" alt="">
+            <span class="hero-shot hero-shot--main"><img src="img/艾妮斯虚晓流光.png" alt=""></span>
+            <span class="hero-shot hero-shot--side"><img src="img/朔耶真子神明恋歌.png" alt=""></span>
+            <span class="hero-shot hero-shot--small"><img src="img/薇姬娜午夜蔷薇.png" alt=""></span>
         </div>
     </section>
 
