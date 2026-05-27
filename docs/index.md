@@ -13,7 +13,7 @@ hide:
             <p class="home-summary">睁开眼吧，世界空无一人。如果前面的光太微弱，如果走着走着累了，随时可以闭上眼睛，折返退回最初的起点。别害怕，在这里所有的停滞都无所谓。只要落笔，所有的错误都可以重来。</p>
             <div class="home-actions">
                 <a class="home-action home-action--primary" href="流程/起草.html"><span>01</span>从起草开始</a>
-                <a class="home-action home-action--cyan" href="专题/眼睛上色.html"><span>02</span>眼睛专题</a>
+                <a class="home-action home-action--cyan" href="专题/眼睛塑造.html"><span>02</span>眼睛专题</a>
                 <a class="home-action home-action--dark" href="色彩知识.html"><span>03</span>色彩整理</a>
             </div>
             <div class="hero-stats">
@@ -187,10 +187,10 @@ hide:
             <h2>专题深入</h2>
         </div>
         <div class="hero-cards">
-            <a class="hero-card" href="专题/眼睛上色.html">
+            <a class="hero-card" href="专题/眼睛塑造.html">
                 <img class="card-thumb" src="img/眼睛.png" alt="">
                 <div class="card-top"><span class="card-icon">眼</span><span class="card-meta">DETAIL</span></div>
-                <div class="card-title">眼睛上色</div>
+                <div class="card-title">眼睛塑造</div>
                 <div class="card-desc">瞳孔、虹膜、高光、反光和睫毛，处理角色最先被注意到的区域。</div>
                 <span class="card-link">阅读专题</span>
             </a>
