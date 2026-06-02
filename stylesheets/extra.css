@@ -2505,6 +2505,30 @@ a {
     transform: rotate(28deg);
 }
 
+.portfolio-shot {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.portfolio-shot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    background: rgba(5, 14, 28, 0.38);
+    pointer-events: none;
+    transition: background 140ms ease;
+}
+
+.portfolio-roster a:hover .portfolio-shot::after,
+.portfolio-roster a.is-active .portfolio-shot::after {
+    background: rgba(5, 14, 28, 0.08);
+}
+
 .home-stage .hero-shot {
     position: absolute;
     z-index: 1;
@@ -4826,4 +4850,42 @@ a {
     .hero-card::after {
         display: none;
     }
+}
+.portfolio-shot {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.portfolio-shot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    background: rgba(5, 14, 28, 0.38);
+    pointer-events: none;
+    transition: background 140ms ease;
+}
+
+.portfolio-roster a:hover .portfolio-shot::after,
+.portfolio-roster a.is-active .portfolio-shot::after {
+    background: rgba(5, 14, 28, 0.08);
+}
+
+.portfolio-roster img {
+    position: absolute !important;
+    inset: -3% !important;
+    display: block !important;
+    width: 106% !important;
+    max-width: none !important;
+    height: 106% !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: filter 140ms ease, transform 140ms ease !important;
 }

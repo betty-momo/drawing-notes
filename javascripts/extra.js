@@ -394,7 +394,11 @@
         link.classList.toggle("is-active", index === 0);
         link.style.setProperty("--portfolio-accent", item.accent || "#47e8ff");
         applyPortfolioDataset(link, item);
-        link.append(makeImage(item.img || "", item.title || ""));
+        
+        const shot = document.createElement("div");
+        shot.className = "portfolio-shot";
+        shot.append(makeImage(item.img || "", item.title || ""));
+        link.append(shot);
 
         const number = document.createElement("span");
         number.textContent = String(index + 1).padStart(2, "0");
