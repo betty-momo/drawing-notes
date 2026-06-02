@@ -4889,3 +4889,6 @@ a {
     box-shadow: none !important;
     transition: filter 140ms ease, transform 140ms ease !important;
 }
+.portfolio-roster span {
+    z-index: 5 !important;
+}
