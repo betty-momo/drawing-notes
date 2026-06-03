@@ -339,6 +339,7 @@
     link.dataset.previewKicker = item.kicker || "PORTFOLIO";
     link.dataset.previewRank = item.rank || "RANK";
     link.dataset.previewRole = item.role || "作品档案";
+    link.dataset.previewTime = item.time || "未知时长";
     link.dataset.previewTitle = item.title || "未命名作品";
     link.dataset.previewDate = item.date || "待补充";
     link.dataset.previewDesc = item.desc || "";
@@ -505,7 +506,7 @@
         setText(target, ".portfolio-date", item.dataset.previewDate);
         setText(target, ".portfolio-desc", item.dataset.previewDesc);
         setText(target, ".portfolio-note", item.dataset.previewNote);
-        setText(target, ".portfolio-role", item.dataset.previewRole);
+        setText(target, ".portfolio-role", item.dataset.previewTime);
         if (item.dataset.previewAccent) {
           target.style.setProperty("--portfolio-accent", item.dataset.previewAccent);
         }
