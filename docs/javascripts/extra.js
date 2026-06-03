@@ -285,7 +285,7 @@
 
   const setText = (root, selector, value) => {
     const node = root?.querySelector(selector);
-    if (node && value) node.textContent = value;
+    if (node && value) node.innerHTML = value;
   };
 
   const setImage = (image, item) => {
