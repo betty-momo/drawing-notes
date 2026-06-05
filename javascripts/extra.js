@@ -522,10 +522,62 @@
     }
   };
 
+  const mountArticleEnhancements = () => {
+    // 1. Scroll Reveal
+    const revealElements = document.querySelectorAll('.md-content p, .md-content img, .md-content h2, .md-content h3');
+    if (revealElements.length > 0 && window.IntersectionObserver) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: "0px 0px -50px 0px" });
+      
+      revealElements.forEach(el => {
+        // Prevent conflict with custom layout pages
+        if (!el.closest('.hub-stage') && !el.closest('.home-stage')) {
+          el.classList.add('reveal-on-scroll');
+          observer.observe(el);
+        }
+      });
+    }
+
+    // 2. Lightbox (Medium Zoom)
+    const images = document.querySelectorAll('.md-content img:not(.no-zoom)');
+    let hasImages = false;
+    images.forEach(img => {
+      if (!img.closest('.hub-stage') && !img.closest('.home-stage') && !img.closest('.topic-showcase')) {
+        hasImages = true;
+      }
+    });
+
+    if (hasImages) {
+      if (!window.mediumZoom) {
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js";
+        script.onload = () => {
+          const validImages = Array.from(images).filter(img => !img.closest('.hub-stage') && !img.closest('.home-stage') && !img.closest('.topic-showcase'));
+          window.mediumZoom(validImages, {
+            margin: 24,
+            background: 'rgba(4, 5, 8, 0.95)',
+            scrollOffset: 0,
+          });
+        };
+        document.body.appendChild(script);
+      } else {
+        const validImages = Array.from(images).filter(img => !img.closest('.hub-stage') && !img.closest('.home-stage') && !img.closest('.topic-showcase'));
+        window.mediumZoom(validImages);
+      }
+    }
+  };
+
   const mountAll = () => {
     runMount("header actions", mountHeaderActions);
     runMount("data sections", mountDataSections);
     runMount("preview switchers", mountPreviewSwitchers);
+    runMount("article enhancements", mountArticleEnhancements);
   };
 
   window.setTimeout(mountAll, 0);
