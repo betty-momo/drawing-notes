@@ -4449,6 +4449,22 @@ a {
     font-weight: 900;
 }
 
+.data-load-error {
+    padding: 0.7rem 0.5rem;
+    color: var(--neo-yellow, #f5d55f);
+    border: 1px solid rgba(245, 213, 95, 0.42);
+    background: rgba(8, 10, 18, 0.9);
+    font-size: 0.72rem;
+    font-weight: 900;
+    line-height: 1.45;
+    text-align: center;
+}
+
+.portfolio-roster .data-load-error {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
 .portfolio-card {
     --portfolio-accent: var(--neo-cyan);
     position: relative;
