@@ -299,6 +299,11 @@
     }, 80);
   };
 
+  const normalizeEmbeddedJson = (raw) => raw
+    .replace(/([}\]])\s*，\s*(?=[{\[])/g, "$1,\n")
+    .replace(/([}\]"0-9])\s*，\s*(?="(?:id|kicker|rank|role|time|title|date|desc|note|img|targetHref|accent|href|direction)"\s*:)/g, "$1,\n")
+    .replace(/"((?:id|kicker|rank|role|time|title|date|desc|note|img|targetHref|accent|href|direction))"\s*：/g, "\"$1\":");
+
   const readJsonData = (root, selector) => {
     const source = root.querySelector(selector);
     if (!source) return [];
@@ -308,8 +313,21 @@
     if (!raw) return [];
     try {
       const data = JSON.parse(raw);
+      root.removeAttribute("data-source-error");
       return Array.isArray(data) ? data : [];
     } catch (error) {
+      const normalized = normalizeEmbeddedJson(raw);
+      if (normalized !== raw) {
+        try {
+          const data = JSON.parse(normalized);
+          root.removeAttribute("data-source-error");
+          console.warn("Drawing notes data used normalized JSON punctuation", error);
+          return Array.isArray(data) ? data : [];
+        } catch (normalizedError) {
+          console.warn("Drawing notes normalized data parse failed", normalizedError);
+        }
+      }
+      root.dataset.sourceError = "数据解析失败，请检查作品集 JSON 标点";
       console.warn("Drawing notes data parse failed", error);
       return [];
     }
@@ -355,11 +373,24 @@
     return image;
   };
 
+  const renderDataError = (roster, message) => {
+    if (!roster || !message) return;
+    const warning = document.createElement("div");
+    warning.className = "data-load-error";
+    warning.textContent = message;
+    roster.replaceChildren(warning);
+    roster.dataset.dataSig = "error";
+  };
+
   const renderCourseData = () => {
     document.querySelectorAll(".course-showcase").forEach((root) => {
       const items = getCachedJsonData(root, ".course-data", "course");
       const roster = root.querySelector(".course-roster");
-      if (!items.length || !roster) return;
+      if (!roster) return;
+      if (!items.length) {
+        renderDataError(roster, root.dataset.sourceError);
+        return;
+      }
       if (roster.children.length === items.length && roster.dataset.dataSig === String(items.length)) return;
 
       roster.replaceChildren(...items.map((item, index) => {
@@ -386,7 +417,11 @@
     document.querySelectorAll(".portfolio-showcase").forEach((root) => {
       const items = getCachedJsonData(root, ".portfolio-data", "portfolio");
       const roster = root.querySelector(".portfolio-roster");
-      if (!items.length || !roster) return;
+      if (!roster) return;
+      if (!items.length) {
+        renderDataError(roster, root.dataset.sourceError);
+        return;
+      }
       if (roster.children.length === items.length && roster.dataset.dataSig === String(items.length)) return;
 
       roster.replaceChildren(...items.map((item, index) => {
