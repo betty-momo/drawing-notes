@@ -2017,7 +2017,7 @@ a {
 .md-tabs__list {
     display: grid;
     height: var(--neo-header-height);
-    grid-template-columns: repeat(4, minmax(4.6rem, 1fr));
+    grid-template-columns: minmax(4.6rem, max-content);
     align-items: center;
     gap: clamp(0.75rem, 2vw, 3.2rem);
     overflow: visible;
