@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   const pageBase = () => {
     try {
       const config = JSON.parse(document.getElementById("__config")?.textContent || "{}");
@@ -398,6 +398,9 @@
         link.href = item.href || "#";
         link.classList.toggle("is-active", index === 0);
         applyCourseDataset(link, item);
+        const pending = /待补充/.test(item.direction || "");
+        link.classList.toggle("is-pending", pending);
+        link.dataset.previewPending = pending ? "1" : "";
         link.append(makeImage(item.img || "", item.title || ""));
 
         const label = document.createElement("span");
@@ -528,6 +531,7 @@
         setText(target, ".course-feature__desc", item.dataset.previewDesc);
         setText(target, ".course-feature__direction", item.dataset.previewDirection);
         setText(target, ".course-feature__note", item.dataset.previewNote);
+        target.classList.toggle("is-pending", item.dataset.previewPending === "1");
       });
     });
 
@@ -615,7 +619,8 @@
   // 4. Homepage hero parallax float
   const mountHeroParallax = () => {
     const visual = document.querySelector('.home-hero__visual');
-    if (!visual) return;
+    if (!visual || visual.dataset.parallaxBound) return;
+    visual.dataset.parallaxBound = "1";
     const imgs = visual.querySelectorAll('img');
     if (imgs.length === 0) return;
     const factors = [0.025, 0.04, 0.015];
@@ -636,12 +641,65 @@
     visual.addEventListener('mouseleave', () => { imgs.forEach(img => { img.style.transform = ''; }); });
   };
 
+  const mountPreflight = () => {
+    document.querySelectorAll("[data-preflight]").forEach((root) => {
+      if (root.dataset.bound) return;
+      root.dataset.bound = "1";
+      const items = Array.from(root.querySelectorAll(".preflight__item"));
+      const total = items.length;
+      const now = new Date();
+      const prefix = "drawing-notes:preflight:";
+      const key = `${prefix}${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+      let saved = [];
+      try {
+        saved = JSON.parse(localStorage.getItem(key) || "[]");
+        Object.keys(localStorage).forEach((k) => { if (k.startsWith(prefix) && k !== key) localStorage.removeItem(k); });
+      } catch (_) { /* storage unavailable */ }
+
+      const doneEl = root.querySelector("[data-preflight-done]");
+      const stateEl = root.querySelector("[data-preflight-state]");
+      const hintEl = root.querySelector("[data-preflight-hint]");
+      const hintDefault = hintEl ? hintEl.textContent : "";
+
+      const update = (persist) => {
+        const done = items.filter((i) => i.getAttribute("aria-pressed") === "true");
+        const n = done.length;
+        const clear = total > 0 && n === total;
+        if (doneEl) doneEl.textContent = String(n);
+        root.style.setProperty("--pf-progress", total ? String(n / total) : "0");
+        root.classList.toggle("is-clear", clear);
+        if (stateEl) stateEl.textContent = clear ? "ALL CLEAR" : (n ? "CHECKING" : "STANDBY");
+        if (hintEl) hintEl.textContent = clear ? "全部确认完毕，可以安心落笔了。" : hintDefault;
+        if (persist) {
+          try { localStorage.setItem(key, JSON.stringify(done.map((i) => i.dataset.check))); } catch (_) { /* ignore */ }
+        }
+      };
+
+      items.forEach((item) => {
+        item.setAttribute("aria-pressed", saved.includes(item.dataset.check) ? "true" : "false");
+        item.addEventListener("click", () => {
+          item.setAttribute("aria-pressed", item.getAttribute("aria-pressed") === "true" ? "false" : "true");
+          update(true);
+        });
+      });
+      const reset = root.querySelector("[data-preflight-reset]");
+      if (reset) {
+        reset.addEventListener("click", () => {
+          items.forEach((i) => i.setAttribute("aria-pressed", "false"));
+          update(true);
+        });
+      }
+      update(false);
+    });
+  };
+
   const mountAll = () => {
     runMount("header actions", mountHeaderActions);
     runMount("data sections", mountDataSections);
     runMount("preview switchers", mountPreviewSwitchers);
     runMount("article enhancements", mountArticleEnhancements);
     runMount("hero parallax", mountHeroParallax);
+    runMount("preflight", mountPreflight);
   };
 
   window.setTimeout(mountAll, 0);
