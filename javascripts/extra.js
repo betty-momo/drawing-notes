@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const pageBase = () => {
     try {
       const config = JSON.parse(document.getElementById("__config")?.textContent || "{}");
@@ -558,54 +558,82 @@
   };
 
   const mountArticleEnhancements = () => {
+    const isCustomPage = !!document.querySelector('.hub-stage, .home-stage');
+
     // 1. Scroll Reveal
-    const revealElements = document.querySelectorAll('.md-content p, .md-content img, .md-content h2, .md-content h3');
-    if (revealElements.length > 0 && window.IntersectionObserver) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { rootMargin: "0px 0px -50px 0px" });
-      
-      revealElements.forEach(el => {
-        // Prevent conflict with custom layout pages
-        if (!el.closest('.hub-stage') && !el.closest('.home-stage')) {
-          el.classList.add('reveal-on-scroll');
-          observer.observe(el);
-        }
-      });
+    if (!isCustomPage) {
+      const sel = '.md-content p, .md-content img, .md-content h2, .md-content h3, .md-content .tip-card, .md-content .warning-card, .md-content .note-card, .md-content .compare-split, .md-content .step-flow';
+      const els = document.querySelectorAll(sel);
+      if (els.length > 0 && window.IntersectionObserver) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+        }, { rootMargin: "0px 0px -60px 0px" });
+        els.forEach(el => { if (!el.classList.contains('reveal-on-scroll')) { el.classList.add('reveal-on-scroll'); obs.observe(el); } });
+      }
     }
 
     // 2. Lightbox (Medium Zoom)
-    const images = document.querySelectorAll('.md-content img:not(.no-zoom)');
-    let hasImages = false;
-    images.forEach(img => {
-      if (!img.closest('.hub-stage') && !img.closest('.home-stage') && !img.closest('.topic-showcase')) {
-        hasImages = true;
-      }
-    });
-
-    if (hasImages) {
-      if (!window.mediumZoom) {
-        const script = document.createElement('script');
-        script.src = "https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js";
-        script.onload = () => {
-          const validImages = Array.from(images).filter(img => !img.closest('.hub-stage') && !img.closest('.home-stage') && !img.closest('.topic-showcase'));
-          window.mediumZoom(validImages, {
-            margin: 24,
-            background: 'rgba(4, 5, 8, 0.95)',
-            scrollOffset: 0,
-          });
-        };
-        document.body.appendChild(script);
-      } else {
-        const validImages = Array.from(images).filter(img => !img.closest('.hub-stage') && !img.closest('.home-stage') && !img.closest('.topic-showcase'));
-        window.mediumZoom(validImages);
+    if (!isCustomPage) {
+      const imgs = Array.from(document.querySelectorAll('.md-content img:not(.no-zoom)')).filter(i => !i.closest('.hub-stage') && !i.closest('.home-stage') && !i.closest('.topic-showcase'));
+      if (imgs.length > 0) {
+        const zoomOpts = { margin: 24, background: 'rgba(4,5,8,0.94)', scrollOffset: 0 };
+        if (!window.mediumZoom) {
+          const s = document.createElement('script');
+          s.src = "https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js";
+          s.onload = () => { window.mediumZoom(imgs, zoomOpts); };
+          document.body.appendChild(s);
+        } else { window.mediumZoom(imgs, zoomOpts); }
       }
     }
+
+    // 3. Back-to-Hub floating button
+    if (!isCustomPage && !document.querySelector('.back-to-hub')) {
+      const p = decodeURIComponent(window.location.pathname);
+      const hubMap = {
+        "流程/": { label: "返回 绘画流程", href: "绘画流程.html" },
+        "专题/": { label: "返回 专题深入", href: "专题深入.html" },
+        "人体知识": { label: "返回 基础知识", href: "基础知识.html" },
+        "场景知识": { label: "返回 基础知识", href: "基础知识.html" },
+        "色彩知识": { label: "返回 基础知识", href: "基础知识.html" },
+      };
+      let hub = null;
+      for (const [k, v] of Object.entries(hubMap)) { if (p.includes(k)) { hub = v; break; } }
+      if (hub) {
+        const btn = document.createElement('a');
+        btn.className = 'back-to-hub';
+        btn.href = hub.href;
+        btn.textContent = hub.label;
+        document.body.appendChild(btn);
+        const h1 = document.querySelector('.md-content h1');
+        if (h1 && window.IntersectionObserver) {
+          new IntersectionObserver(([e]) => { btn.classList.toggle('is-visible', !e.isIntersecting); }, { threshold: 0 }).observe(h1);
+        } else { setTimeout(() => btn.classList.add('is-visible'), 800); }
+      }
+    }
+  };
+
+  // 4. Homepage hero parallax float
+  const mountHeroParallax = () => {
+    const visual = document.querySelector('.home-hero__visual');
+    if (!visual) return;
+    const imgs = visual.querySelectorAll('img');
+    if (imgs.length === 0) return;
+    const factors = [0.025, 0.04, 0.015];
+    let raf = null;
+    visual.addEventListener('mousemove', (e) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const r = visual.getBoundingClientRect();
+        const cx = (e.clientX - r.left) / r.width - 0.5;
+        const cy = (e.clientY - r.top) / r.height - 0.5;
+        imgs.forEach((img, i) => {
+          const f = factors[i % factors.length];
+          img.style.transform = `translate(${cx * r.width * f}px, ${cy * r.height * f}px)`;
+        });
+        raf = null;
+      });
+    });
+    visual.addEventListener('mouseleave', () => { imgs.forEach(img => { img.style.transform = ''; }); });
   };
 
   const mountAll = () => {
@@ -613,6 +641,7 @@
     runMount("data sections", mountDataSections);
     runMount("preview switchers", mountPreviewSwitchers);
     runMount("article enhancements", mountArticleEnhancements);
+    runMount("hero parallax", mountHeroParallax);
   };
 
   window.setTimeout(mountAll, 0);
