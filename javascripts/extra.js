@@ -561,59 +561,213 @@
     }
   };
 
+  const ARTICLE_STEPS = ["起草", "勾线", "固有色", "二分", "三分", "闭塞", "灰面", "高光", "反光", "塑造", "光源衰减"];
+
+  const getArticleRoot = () => {
+    const inner = document.querySelector(".md-content__inner");
+    if (!inner || inner.querySelector(".home-stage, .hub-stage")) return null;
+    return inner;
+  };
+
+  const headingText = (h) => {
+    const clone = h.cloneNode(true);
+    clone.querySelectorAll(".headerlink").forEach((a) => a.remove());
+    return clone.textContent.trim();
+  };
+
   const mountArticleEnhancements = () => {
-    const isCustomPage = !!document.querySelector('.hub-stage, .home-stage');
-
-    // 1. Scroll Reveal
-    if (!isCustomPage) {
-      const sel = '.md-content p, .md-content img, .md-content h2, .md-content h3, .md-content .tip-card, .md-content .warning-card, .md-content .note-card, .md-content .compare-split, .md-content .step-flow';
-      const els = document.querySelectorAll(sel);
-      if (els.length > 0 && window.IntersectionObserver) {
-        const obs = new IntersectionObserver((entries) => {
-          entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
-        }, { rootMargin: "0px 0px -60px 0px" });
-        els.forEach(el => { if (!el.classList.contains('reveal-on-scroll')) { el.classList.add('reveal-on-scroll'); obs.observe(el); } });
-      }
+    // Instant navigation keeps <body>: clear widgets left over from the previous page.
+    document.querySelectorAll(".back-to-hub, .toc-dock, .read-progress").forEach((el) => el.remove());
+    if (window.__articleScroll) {
+      window.removeEventListener("scroll", window.__articleScroll);
+      window.removeEventListener("resize", window.__articleScroll);
+      window.__articleScroll = null;
     }
 
-    // 2. Lightbox (Medium Zoom)
-    if (!isCustomPage) {
-      const imgs = Array.from(document.querySelectorAll('.md-content img:not(.no-zoom)')).filter(i => !i.closest('.hub-stage') && !i.closest('.home-stage') && !i.closest('.topic-showcase'));
-      if (imgs.length > 0) {
-        const zoomOpts = { margin: 24, background: 'rgba(4,5,8,0.94)', scrollOffset: 0 };
-        if (!window.mediumZoom) {
-          const s = document.createElement('script');
-          s.src = "https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js";
-          s.onload = () => { window.mediumZoom(imgs, zoomOpts); };
-          document.body.appendChild(s);
-        } else { window.mediumZoom(imgs, zoomOpts); }
-      }
+    const inner = getArticleRoot();
+    if (!inner) return;
+
+    const path = decodeURIComponent(window.location.pathname);
+    const page = (path.match(/([^/]+)\.html$/) || [])[1] || "";
+    const h1 = inner.querySelector(":scope > h1");
+
+    // 1. Hero: category kicker, page cover, step progress, meta strip
+    let hub = null;
+    let kicker = "NOTE FILE";
+    if (path.includes("/流程/")) {
+      const i = ARTICLE_STEPS.indexOf(page);
+      kicker = i >= 0 ? `PROCESS · STEP ${String(i + 1).padStart(2, "0")} / ${ARTICLE_STEPS.length}` : "PROCESS";
+      if (h1 && i >= 0) h1.style.setProperty("--step-p", `${(((i + 1) / ARTICLE_STEPS.length) * 100).toFixed(2)}%`);
+      hub = { label: "绘画流程", href: "../绘画流程.html" };
+    } else if (path.includes("/专题/")) {
+      kicker = "DETAIL · 专题深入";
+      hub = { label: "专题深入", href: "../专题深入.html" };
+    } else if (/(人体|场景|色彩)知识/.test(page)) {
+      kicker = "FOUNDATION · 基础知识";
+      hub = { label: "基础知识", href: "基础知识.html" };
     }
 
-    // 3. Back-to-Hub floating button
-    if (!isCustomPage && !document.querySelector('.back-to-hub')) {
-      const p = decodeURIComponent(window.location.pathname);
-      const hubMap = {
-        "流程/": { label: "返回 绘画流程", href: "绘画流程.html" },
-        "专题/": { label: "返回 专题深入", href: "专题深入.html" },
-        "人体知识": { label: "返回 基础知识", href: "基础知识.html" },
-        "场景知识": { label: "返回 基础知识", href: "基础知识.html" },
-        "色彩知识": { label: "返回 基础知识", href: "基础知识.html" },
-      };
-      let hub = null;
-      for (const [k, v] of Object.entries(hubMap)) { if (p.includes(k)) { hub = v; break; } }
+    if (h1) {
+      h1.dataset.kicker = kicker;
+      const cover = inner.querySelector("img:not(.no-zoom)");
+      if (cover && cover.src) h1.style.setProperty("--hero-img", `url("${cover.src}")`);
+
+      inner.querySelectorAll(":scope > .article-meta").forEach((el) => el.remove());
+      const sections = inner.querySelectorAll(":scope > h2, :scope > h1:not(:first-of-type)").length;
+      const images = inner.querySelectorAll("img").length;
+      const chars = (inner.textContent || "").replace(/\s/g, "").length;
+      const minutes = Math.max(1, Math.round(chars / 450));
+      const meta = document.createElement("div");
+      meta.className = "article-meta";
+      [["章节", String(sections)], ["配图", images ? String(images) : ""], ["阅读", `约 ${minutes} 分钟`]].filter(([, v]) => v && v !== "0").forEach(([k, v]) => {
+        const item = document.createElement("span");
+        item.className = "article-meta__item";
+        const em = document.createElement("em");
+        const b = document.createElement("b");
+        em.textContent = k;
+        b.textContent = v;
+        item.append(em, b);
+        meta.append(item);
+      });
       if (hub) {
-        const btn = document.createElement('a');
-        btn.className = 'back-to-hub';
-        btn.href = hub.href;
-        btn.textContent = hub.label;
-        document.body.appendChild(btn);
-        const h1 = document.querySelector('.md-content h1');
-        if (h1 && window.IntersectionObserver) {
-          new IntersectionObserver(([e]) => { btn.classList.toggle('is-visible', !e.isIntersecting); }, { threshold: 0 }).observe(h1);
-        } else { setTimeout(() => btn.classList.add('is-visible'), 800); }
+        const a = document.createElement("a");
+        a.className = "article-meta__hub";
+        a.href = hub.href;
+        a.textContent = `← 返回 ${hub.label}`;
+        meta.append(a);
+      }
+      h1.after(meta);
+    }
+
+    // 2. Scroll reveal
+    if (window.IntersectionObserver) {
+      const sel = ":scope > p, :scope > ul, :scope > ol, :scope > h2, :scope > h3, :scope > h1:not(:first-of-type), " +
+        ":scope > blockquote, :scope > .tip-card, :scope > .warning-card, :scope > .note-card, " +
+        ":scope > .compare-split, :scope > .step-flow, :scope > div";
+      const els = Array.from(inner.querySelectorAll(sel)).filter((el) => !el.classList.contains("article-meta"));
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            obs.unobserve(e.target);
+          }
+        });
+      }, { rootMargin: "0px 0px -40px 0px" });
+      els.forEach((el) => {
+        if (!el.classList.contains("reveal-on-scroll")) {
+          el.classList.add("reveal-on-scroll");
+          obs.observe(el);
+        }
+      });
+    }
+
+    // 3. Lightbox (Medium Zoom) — bind each image once
+    const zoomImgs = Array.from(inner.querySelectorAll("img:not(.no-zoom)")).filter((img) => !img.dataset.zoomBound);
+    if (zoomImgs.length) {
+      zoomImgs.forEach((img) => { img.dataset.zoomBound = "1"; });
+      const zoomOpts = { margin: 24, background: "rgba(4,5,8,0.94)", scrollOffset: 0 };
+      if (window.mediumZoom) {
+        window.mediumZoom(zoomImgs, zoomOpts);
+      } else {
+        const s = document.createElement("script");
+        s.src = "https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js";
+        s.onload = () => { if (window.mediumZoom) window.mediumZoom(zoomImgs, zoomOpts); };
+        document.body.appendChild(s);
       }
     }
+
+    // 4. Back-to-hub floating button (appears after scrolling past the hero)
+    if (hub) {
+      const btn = document.createElement("a");
+      btn.className = "back-to-hub";
+      btn.href = hub.href;
+      btn.textContent = `返回 ${hub.label}`;
+      document.body.appendChild(btn);
+      if (h1 && window.IntersectionObserver) {
+        new IntersectionObserver(([e]) => { btn.classList.toggle("is-visible", !e.isIntersecting); }, { threshold: 0 }).observe(h1);
+      } else {
+        btn.classList.add("is-visible");
+      }
+    }
+
+    // 5. Reading progress + floating table of contents with scroll-spy
+    const bar = document.createElement("div");
+    bar.className = "read-progress";
+    bar.setAttribute("aria-hidden", "true");
+    document.body.appendChild(bar);
+
+    const heads = Array.from(inner.querySelectorAll(":scope > h1:not(:first-of-type), :scope > h2, :scope > h3")).filter((h) => h.id);
+    const links = [];
+    let panel = null;
+    if (heads.length >= 3) {
+      const dock = document.createElement("nav");
+      dock.className = "toc-dock";
+      dock.setAttribute("aria-label", "本页目录");
+      const toggle = document.createElement("button");
+      toggle.className = "toc-dock__toggle";
+      toggle.type = "button";
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.innerHTML = `<span>目录</span><b>${heads.length}</b>`;
+      panel = document.createElement("div");
+      panel.className = "toc-dock__panel";
+      const title = document.createElement("p");
+      title.className = "toc-dock__title";
+      title.textContent = "ON THIS PAGE";
+      const list = document.createElement("ol");
+      list.className = "toc-dock__list";
+      heads.forEach((h) => {
+        const li = document.createElement("li");
+        li.className = `toc-dock__item toc-dock__item--${h.tagName.toLowerCase()}`;
+        const a = document.createElement("a");
+        a.href = `#${h.id}`;
+        a.textContent = headingText(h);
+        a.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          h.scrollIntoView({ behavior: "smooth", block: "start" });
+          history.replaceState(null, "", `#${h.id}`);
+          if (!window.matchMedia("(min-width: 100em)").matches) {
+            dock.classList.remove("is-open");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+        li.append(a);
+        list.append(li);
+        links.push(a);
+      });
+      panel.append(title, list);
+      dock.append(panel, toggle);
+      toggle.addEventListener("click", () => {
+        const open = !dock.classList.contains("is-open");
+        dock.classList.toggle("is-open", open);
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+      document.body.appendChild(dock);
+    }
+
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0})`;
+        if (!links.length) return;
+        const line = window.innerHeight * 0.3;
+        let cur = 0;
+        heads.forEach((h, i) => { if (h.getBoundingClientRect().top <= line) cur = i; });
+        links.forEach((a, i) => a.classList.toggle("is-current", i === cur));
+        const active = links[cur];
+        if (panel && active) {
+          const top = active.offsetTop - panel.clientHeight / 2;
+          if (Math.abs(panel.scrollTop - top) > panel.clientHeight / 3) panel.scrollTop = top;
+        }
+      });
+    };
+    window.__articleScroll = onScroll;
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    onScroll();
   };
 
   // 4. Homepage hero parallax float
